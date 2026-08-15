@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Pharmacy Stock Management</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+          asp-append-version="true" />
+
+    <!-- Site CSS -->
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet"
+          href="~/css/dashboard.css"
+          asp-append-version="true" />
+
+    <!-- Generated CSS -->
+    <link rel="stylesheet"
+          href="~/pharmacystock.styles.css"
+          asp-append-version="true" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Toastr -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+
+<body>
+
+    <!-- =========================================================
+         NAVBAR
+    ========================================================== -->
+
+    <header class="main-navbar">
+
+        <!-- SOL: KULLANICI -->
+        <div class="navbar-user">
+
+            <div class="navbar-user-icon">
+                <i class="bi bi-person-circle"></i>
+            </div>
+
+            <div class="navbar-user-info">
+
+                <div class="navbar-user-name">
+                    @(User.Identity?.IsAuthenticated == true
+                        ? User.Identity.Name
+                        : "Misafir")
+                </div>
+
+                <div class="navbar-user-status">
+                    <span class="status-dot"></span>
+
+                    @(User.Identity?.IsAuthenticated == true
+                        ? "Giriş Yapıldı"
+                        : "Giriş Yapılmadı")
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ORTA: LOGO / BAŞLIK -->
+        <div class="navbar-brand-center">
+
+            <i class="bi bi-capsule-pill"></i>
+
+            <span>
+                Pharmacy Stock Management
+            </span>
+
+        </div>
+
+
+        <!-- SAĞ: İŞLEMLER -->
+        <div class="navbar-actions">
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <div class="navbar-account">
+
+                    <i class="bi bi-shield-check"></i>
+
+                    <span>
+                        @User.Identity.Name
+                    </span>
+
+                </div>
+            }
+
+            <!-- Tema -->
+            <button id="themeToggle"
+                    type="button"
+                    class="theme-toggle"
+                    title="Tema Değiştir"
+                    aria-label="Tema Değiştir">
+
+                <i class="bi bi-moon-fill"></i>
+
+            </button>
+
+
+            <!-- Çıkış -->
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <form asp-controller="Account"
+                      asp-action="Logout"
+                      method="post"
+                      class="m-0">
+
+                    <button type="submit"
+                            class="logout-button">
+
+                        <i class="bi bi-box-arrow-right"></i>
+
+                        <span>Çıkış Yap</span>
+
+                    </button>
+
+                </form>
+            }
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         APP CONTAINER
+    ========================================================== -->
+
+    <div class="app-container">
+
+
+        <!-- =====================================================
+             SIDEBAR
+        ====================================================== -->
+
+        <aside class="app-sidebar">
+
+            <!-- LOGO -->
+            <div class="sidebar-brand">
+
+                <div class="sidebar-logo">
+                    <i class="bi bi-capsule-pill"></i>
+                </div>
+
+                <h5>
+                    Pharmacy Stock
+                </h5>
+
+                <small>
+                    Management System
+                </small>
+
+                <div class="sidebar-divider"></div>
+
+            </div>
+
+
+            @{
+                var currentController =
+                    ViewContext.RouteData.Values["Controller"]?.ToString();
+
+                var currentAction =
+                    ViewContext.RouteData.Values["Action"]?.ToString();
+
+                bool isAnalysisActive =
+                    currentController == "StockTurnover" ||
+                    currentController == "OrderDraft" ||
+                    currentController == "PurchaseOrder" ||
+                    currentController == "ABCAnalysis";
+            }
+
+
+            <!-- =================================================
+                 DASHBOARD
+            ================================================== -->
+
+            <a asp-controller="Dashboard"
+               asp-action="Index"
+               class="sidebar-link link-purple @(currentController == "Dashboard" ? "active-page" : "")">
+
+                <i class="bi bi-speedometer2"></i>
+
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <!-- =================================================
+                 KATEGORİLER
+            ================================================== -->
+
+            <a class="sidebar-link sidebar-collapse-link
+               @(currentController == "Category" ? "" : "collapsed")"
+               data-bs-toggle="collapse"
+               href="#categoryMenu"
+               role="button"
+               aria-expanded="@(currentController == "Category" ? "true" : "false")">
+
+                <span>
+                    <i class="bi bi-tags"></i>
+                    Kategoriler
+                </span>
+
+                <i class="bi bi-chevron-down chevron"></i>
+
+            </a>
+
+            <div class="collapse submenu
+                 @(currentController == "Category" ? "show" : "")"
+                 id="categoryMenu">
+
+                <a asp-controller="Category"
+                   asp-action="Index"
+                   class="sidebar-link
+                   @(currentController == "Category" && currentAction == "Index"
+                       ? "active-page"
+                       : "")">
+
+                    <i class="bi bi-list-ul"></i>
+                    <span>Kategori Listesi</span>
+
+                </a>
+
+                <a asp-controller="Category"
+                   asp-action="Create"
+                   class="sidebar-link
+                   @(currentController == "Category" && currentAction == "Create"
+                       ? "active-page"
+                       : "")">
+
+                    <i class="bi bi-plus-circle"></i>
+                    <span>Yeni Kategori</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 MARKALAR
+            ================================================== -->
+
+            <a class="sidebar-link sidebar-collapse-link
+               @(currentController == "Brand" ? "" : "collapsed")"
+               data-bs-toggle="collapse"
+               href="#brandMenu"
+               role="button"
+               aria-expanded="@(currentController == "Brand" ? "true" : "false")">
+
+                <span>
+                    <i class="bi bi-bookmark"></i>
+                    Markalar
+                </span>
+
+                <i class="bi bi-chevron-down chevron"></i>
+
+            </a>
+
+            <div class="collapse submenu
+                 @(currentController == "Brand" ? "show" : "")"
+                 id="brandMenu">
+
+                <a asp-controller="Brand"
+                   asp-action="Index"
+                   class="sidebar-link
+                   @(currentController == "Brand" && currentAction == "Index"
+                       ? "active-page"
+                       : "")">
+
+                    <i class="bi bi-list-ul"></i>
+                    <span>Marka Listesi</span>
+
+                </a>
+
+                <a asp-controller="Brand"
+                   asp-action="Create"
+                   class="sidebar-link
+                   @(currentController == "Brand" && currentAction == "Create"
+                       ? "active-page"
+                       : "")">
+
+                    <i class="bi bi-plus-circle"></i>
+                    <span>Yeni Marka</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 ÜRÜNLER
+            ================================================== -->
+
+            <a class="sidebar-link sidebar-collapse-link
+               @(currentController == "Product" ? "" : "collapsed")"
+               data-bs-toggle="collapse"
+               href="#productMenu"
+               role="button"
+               aria-expanded="@(currentController == "Product" ? "true" : "false")">
+
+                <span>
+                    <i class="bi bi-capsule"></i>
+                    Ürünler
+                </span>
+
+                <i class="bi bi-chevron-down chevron"></i>
+
+            </a>
+
+            <div class="collapse submenu
+                 @(currentController == "Product" ? "show" : "")"
+                 id="productMenu">
+
+                <a asp-controller="Product"
+                   asp-action="Index"
+                   class="sidebar-link
+                   @(currentController == "Product" && currentAction == "Index"
+                       ? "active-page"
+                       : "")">
+
+                    <i class="bi bi-box-seam"></i>
+                    <span>Ürün Listesi</span>
+
+                </a>
+
+                <a asp-controller="Product"
+                   asp-action="Create"
+                   class="sidebar-link
+                   @(currentController == "Product" && currentAction == "Create"
+                       ? "active-page"
+                       : "")">
+
+                    <i class="bi bi-plus-circle"></i>
+                    <span>Yeni Ürün</span>
+
+                </a>
+
+                <a asp-controller="Product"
+                   asp-action="CriticalStock"
+                   class="sidebar-link
+                   @(currentController == "Product" && currentAction == "CriticalStock"
+                       ? "active-page"
+                       : "")">
+
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <span>Kritik Stoktaki Ürünler</span>
+
+                </a>
+
+                <a asp-controller="Product"
+                   asp-action="OutOfStock"
+                   class="sidebar-link
+                   @(currentController == "Product" && currentAction == "OutOfStock"
+                       ? "active-page"
+                       : "")">
+
+                    <i class="bi bi-x-circle"></i>
+                    <span>Tükenen Ürünler</span>
+
+                </a>
+
+                <a asp-controller="Product"
+                   asp-action="ExpiringSoon"
+                   class="sidebar-link
+                   @(currentController == "Product" && currentAction == "ExpiringSoon"
+                       ? "active-page"
+                       : "")">
+
+                    <i class="bi bi-clock"></i>
+                    <span>SKT Yaklaşan Ürünler</span>
+
+                </a>
+
+                <a asp-controller="Product"
+                   asp-action="Expired"
+                   class="sidebar-link
+                   @(currentController == "Product" && currentAction == "Expired"
+                       ? "active-page"
+                       : "")">
+
+                    <i class="bi bi-calendar-x"></i>
+                    <span>SKT Geçmiş Ürünler</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 STOK HAREKETLERİ
+            ================================================== -->
+
+            <a class="sidebar-link sidebar-collapse-link
+               @(currentController == "StockTransaction" ? "" : "collapsed")"
+               data-bs-toggle="collapse"
+               href="#stockMenu"
+               role="button"
+               aria-expanded="@(currentController == "StockTransaction" ? "true" : "false")">
+
+                <span>
+                    <i class="bi bi-box-seam"></i>
+                    Stok Hareketleri
+                </span>
+
+                <i class="bi bi-chevron-down chevron"></i>
+
+            </a>
+
+            <div class="collapse submenu
+                 @(currentController == "StockTransaction" ? "show" : "")"
+                 id="stockMenu">
+
+                <a asp-controller="StockTransaction"
+                   asp-action="Recent"
+                   class="sidebar-link
+                   @(currentController == "StockTransaction" && currentAction == "Recent"
+                       ? "active-page"
+                       : "")">
+
+                    <i class="bi bi-clock-history"></i>
+                    <span>Son Stok Hareketleri</span>
+
+                </a>
+
+                <a asp-controller="StockTransaction"
+                   asp-action="Create"
+                   class="sidebar-link
+                   @(currentController == "StockTransaction" && currentAction == "Create"
+                       ? "active-page"
+                       : "")">
+
+                    <i class="bi bi-plus-circle"></i>
+                    <span>Yeni Hareket</span>
+
+                </a>
+
+                <a asp-controller="StockTransaction"
+                   asp-action="Index"
+                   class="sidebar-link
+                   @(currentController == "StockTransaction" && currentAction == "Index"
+                       ? "active-page"
+                       : "")">
+
+                    <i class="bi bi-list-check"></i>
+                    <span>Tüm Hareketler</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 ANALİZLER & SİPARİŞLER
+            ================================================== -->
+
+            <a class="sidebar-link sidebar-collapse-link
+               @(isAnalysisActive ? "" : "collapsed")"
+               data-bs-toggle="collapse"
+               href="#analysisMenu"
+               role="button"
+               aria-expanded="@(isAnalysisActive ? "true" : "false")">
+
+                <span>
+                    <i class="bi bi-bar-chart-line"></i>
+                    Analizler & Siparişler
+                </span>
+
+                <i class="bi bi-chevron-down chevron"></i>
+
+            </a>
+
+
+            <div class="collapse submenu
+                 @(isAnalysisActive ? "show" : "")"
+                 id="analysisMenu">
+
+
+                <a asp-controller="StockTurnover"
+                   asp-action="Index"
+                   class="sidebar-link
+                   @(currentController == "StockTurnover" ? "active-page" : "")">
+
+                    <i class="bi bi-arrow-repeat"></i>
+                    <span>Stok Devir Analizi</span>
+
+                </a>
+
+
+                <a asp-controller="OrderDraft"
+                   asp-action="Index"
+                   class="sidebar-link
+                   @(currentController == "OrderDraft" ? "active-page" : "")">
+
+                    <i class="bi bi-clipboard-check"></i>
+                    <span>Sipariş Taslağı</span>
+
+                </a>
+
+
+                <a asp-controller="PurchaseOrder"
+                   asp-action="Index"
+                   class="sidebar-link
+                   @(currentController == "PurchaseOrder" ? "active-page" : "")">
+
+                    <i class="bi bi-clock-history"></i>
+                    <span>Sipariş Geçmişi</span>
+
+                </a>
+
+
+                <a asp-controller="ABCAnalysis"
+                   asp-action="Index"
+                   class="sidebar-link
+                   @(currentController == "ABCAnalysis" ? "active-page" : "")">
+
+                    <i class="bi bi-pie-chart-fill"></i>
+                    <span>ABC Stok Analizi</span>
+
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =====================================================
+             PAGE CONTENT
+        ====================================================== -->
+
+        <main class="app-content">
+
+            @RenderBody()
+
+        </main>
+
+    </div>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+            asp-append-version="true"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
+
+
+    <!-- =========================================================
+         MENÜ AKTİFLİK
+    ========================================================== -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            let currentPath =
+                window.location.pathname.toLowerCase();
+
+            if (currentPath.endsWith("/") &&
+                currentPath.length > 1) {
+
+                currentPath =
+                    currentPath.slice(0, -1);
+            }
+
+
+            const sidebarLinks =
+                document.querySelectorAll(
+                    ".app-sidebar a"
+                );
+
+
+            sidebarLinks.forEach(function (link) {
+
+                const href =
+                    link.getAttribute("href");
+
+                if (!href)
+                    return;
+
+
+                let linkPath =
+                    href
+                        .split("?")[0]
+                        .split("#")[0]
+                        .toLowerCase();
+
+
+                if (linkPath.endsWith("/") &&
+                    linkPath.length > 1) {
+
+                    linkPath =
+                        linkPath.slice(0, -1);
+                }
+
+
+                if (linkPath === currentPath) {
+
+                    link.classList.add("active-page");
+
+
+                    const parentCollapse =
+                        link.closest(".collapse");
+
+
+                    if (parentCollapse) {
+
+                        parentCollapse.classList.add("show");
+
+
+                        const trigger =
+                            document.querySelector(
+                                `a[href="#${parentCollapse.id}"]`
+                            );
+
+
+                        if (trigger) {
+
+                            trigger.setAttribute(
+                                "aria-expanded",
+                                "true"
+                            );
+
+                            trigger.classList.remove(
+                                "collapsed"
+                            );
+                        }
+                    }
+                }
+
+            });
+
+        });
+
+    </script>
+
+
+    @await RenderSectionAsync(
+        "Scripts",
+        required: false
+    )
+
+</body>
+
+</html>

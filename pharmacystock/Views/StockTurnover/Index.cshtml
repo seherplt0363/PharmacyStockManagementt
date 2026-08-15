@@ -1,0 +1,495 @@
+@model List<PharmacyStock.DTO.AnalysisDTO.StockTurnoverDto>
+
+@{
+    ViewData["Title"] = "Stok Devir Analizi";
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/stock-turnover.css"
+          asp-append-version="true" />
+}
+
+<div class="container-fluid py-4">
+
+    <!-- =====================================================
+         BAŞLIK
+    ====================================================== -->
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-bar-chart-line-fill text-primary me-2"></i>
+                Stok Devir Analizi
+            </h2>
+
+            <p class="text-muted mb-0">
+                Ürünlerin stok hareketlerini ve devir oranlarını analiz edin.
+            </p>
+
+        </div>
+
+
+        <a asp-action="SyncStocks"
+           class="btn btn-outline-primary d-inline-flex align-items-center gap-2 shadow-sm">
+
+            <i class="bi bi-arrow-repeat"></i>
+
+            <span>Stokları Senkronize Et</span>
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         BAŞARI MESAJI
+    ====================================================== -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 mb-4"
+             role="alert">
+
+            <div class="d-flex align-items-center">
+
+                <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+
+                <div>
+                    @TempData["Success"]
+                </div>
+
+            </div>
+
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close">
+            </button>
+
+        </div>
+    }
+
+
+    <!-- =====================================================
+         ÖZET KARTLARI
+    ====================================================== -->
+
+    <div class="row g-3 mb-4">
+
+
+        <!-- ORTALAMA DEVİR -->
+
+        <div class="col-xl col-lg-4 col-md-6">
+
+            <div class="card turnover-card card-avg h-100">
+
+                <div class="card-body text-center d-flex flex-column justify-content-center py-3 px-2">
+
+                    <i class="bi bi-speedometer2 turnover-card-icon"></i>
+
+                    <div class="turnover-card-label">
+                        Ortalama Devir
+                    </div>
+
+                    <div class="turnover-card-value">
+
+                        @(ViewBag.AverageTurnover != null
+                            ? ((double)ViewBag.AverageTurnover).ToString("0.0")
+                            : "0.0") %
+
+                    </div>
+
+                    <div class="turnover-card-desc mt-1">
+                        Tüm ürünlerin ortalama stok devir hızı
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- HIZLI DÖNEN -->
+
+        <div class="col-xl col-lg-4 col-md-6">
+
+            <div class="card turnover-card card-fast h-100">
+
+                <div class="card-body text-center d-flex flex-column justify-content-center py-3 px-2">
+
+                    <i class="bi bi-lightning-fill turnover-card-icon"></i>
+
+                    <div class="turnover-card-label">
+                        Hızlı Dönen
+                    </div>
+
+                    <div class="turnover-card-value">
+                        @(ViewBag.FastCount ?? 0)
+                    </div>
+
+                    <div class="turnover-card-desc mt-1">
+                        Devir oranı %80 ve üzeri olan hızlı ürünler
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- NORMAL -->
+
+        <div class="col-xl col-lg-4 col-md-6">
+
+            <div class="card turnover-card card-normal h-100">
+
+                <div class="card-body text-center d-flex flex-column justify-content-center py-3 px-2">
+
+                    <i class="bi bi-arrow-repeat turnover-card-icon"></i>
+
+                    <div class="turnover-card-label">
+                        Normal
+                    </div>
+
+                    <div class="turnover-card-value">
+                        @(ViewBag.NormalCount ?? 0)
+                    </div>
+
+                    <div class="turnover-card-desc mt-1">
+                        Devir oranı %60 - %79 arası normal hareketliler
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- YAVAŞ DÖNEN -->
+
+        <div class="col-xl col-lg-4 col-md-6">
+
+            <div class="card turnover-card card-slow h-100">
+
+                <div class="card-body text-center d-flex flex-column justify-content-center py-3 px-2">
+
+                    <i class="bi bi-clock-history turnover-card-icon"></i>
+
+                    <div class="turnover-card-label">
+                        Yavaş Dönen
+                    </div>
+
+                    <div class="turnover-card-value">
+                        @(ViewBag.SlowCount ?? 0)
+                    </div>
+
+                    <div class="turnover-card-desc mt-1">
+                        Devir oranı %40 - %59 arası yavaş ürünler
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- HAREKETSİZ -->
+
+        <div class="col-xl col-lg-4 col-md-6">
+
+            <div class="card turnover-card card-dead h-100">
+
+                <div class="card-body text-center d-flex flex-column justify-content-center py-3 px-2">
+
+                    <i class="bi bi-x-octagon-fill turnover-card-icon"></i>
+
+                    <div class="turnover-card-label">
+                        Hareketsiz
+                    </div>
+
+                    <div class="turnover-card-value">
+                        @(ViewBag.DeadCount ?? 0)
+                    </div>
+
+                    <div class="turnover-card-desc mt-1">
+                        Devir oranı %40'ın altındaki durağan ürünler
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ANALİZ TABLOSU
+    ====================================================== -->
+
+    <div class="card turnover-table-card shadow-sm border-0 rounded-3">
+
+        <div class="card-body p-4">
+
+
+            <!-- TABLO BAŞLIK -->
+
+            <div class="d-flex align-items-center mb-3">
+
+                <h4 class="mb-0 fw-bold table-title-text">
+                    Stok Devir Detayları
+                </h4>
+
+            </div>
+
+
+            <!-- TABLO -->
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+
+                    <thead class="turnover-thead">
+
+                        <tr>
+
+                            <th>
+                                Ürün
+                            </th>
+
+                            <th class="text-center">
+                                Başlangıç
+                            </th>
+
+                            <th class="text-center">
+                                Giriş
+                            </th>
+
+                            <th class="text-center">
+                                Çıkış
+                            </th>
+
+                            <th class="text-center">
+                                Mevcut
+                            </th>
+
+                            <th class="turnover-rate-column">
+                                Devir Oranı
+                            </th>
+
+                            <th class="text-center">
+                                Durum
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="turnoverTableBody">
+
+                        @if (!Model.Any())
+                        {
+                            <tr>
+
+                                <td colspan="7"
+                                    class="text-center text-muted py-5">
+
+                                    <i class="bi bi-box-seam fs-1 d-block mb-2 text-secondary"></i>
+
+                                    Henüz stok hareketi bulunmuyor.
+
+                                </td>
+
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model)
+                            {
+                                var initialStock =
+                                    item.CurrentStock
+                                    - item.TotalStockIn
+                                    + item.TotalStockOut;
+
+                                var rate =
+                                    Math.Max(
+                                        0,
+                                        Math.Min(
+                                            item.TurnoverRate,
+                                            100
+                                        )
+                                    );
+
+
+                                string badgeClass;
+                                string progressClass;
+                                string statusText;
+
+
+                                if (item.TurnoverRate >= 80)
+                                {
+                                    statusText = "Hızlı Dönen";
+                                    badgeClass = "bg-success text-white";
+                                    progressClass = "progress-bar-fast";
+                                }
+                                else if (item.TurnoverRate >= 60)
+                                {
+                                    statusText = "Normal";
+                                    badgeClass = "bg-info text-white";
+                                    progressClass = "progress-bar-normal";
+                                }
+                                else if (item.TurnoverRate >= 40)
+                                {
+                                    statusText = "Yavaş Dönen";
+                                    badgeClass = "bg-warning text-dark";
+                                    progressClass = "progress-bar-slow";
+                                }
+                                else
+                                {
+                                    statusText = "Hareketsiz";
+                                    badgeClass = "bg-danger text-white";
+                                    progressClass = "progress-bar-dead";
+                                }
+
+
+                                <tr>
+
+
+                                    <!-- ÜRÜN -->
+
+                                    <td class="fw-semibold">
+
+                                        <i class="bi bi-capsule text-primary me-2"></i>
+
+                                        @item.ProductName
+
+                                    </td>
+
+
+                                    <!-- BAŞLANGIÇ STOKU -->
+
+                                    <td class="text-center">
+
+                                        <span class="badge bg-secondary opacity-75">
+
+                                            @initialStock
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- GİRİŞ -->
+
+                                    <td class="text-center">
+
+                                        <span class="text-success fw-bold d-inline-flex align-items-center gap-1">
+
+                                            <i class="bi bi-arrow-down-circle"></i>
+
+                                            @item.TotalStockIn
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- ÇIKIŞ -->
+
+                                    <td class="text-center">
+
+                                        <span class="text-danger fw-bold d-inline-flex align-items-center gap-1">
+
+                                            <i class="bi bi-arrow-up-circle"></i>
+
+                                            @item.TotalStockOut
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- MEVCUT -->
+
+                                    <td class="text-center">
+
+                                        @if (item.CurrentStock <= 0)
+                                        {
+                                            <span class="badge bg-danger">
+                                                Tükendi
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">
+                                                @item.CurrentStock
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- DEVİR ORANI -->
+
+                                    <td>
+
+                                        <div class="progress mb-1 turnover-progress">
+
+                                            <div class="progress-bar @progressClass"
+                                                 role="progressbar"
+                                                 style="width: @rate.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)%"
+                                                 aria-valuenow="@Convert.ToInt32(rate)"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="100">
+                                            </div>
+
+                                        </div>
+
+
+                                        <small class="fw-bold opacity-75">
+
+                                            @item.TurnoverRate.ToString("0.0") %
+
+                                        </small>
+
+                                    </td>
+
+
+                                    <!-- DURUM -->
+
+                                    <td class="text-center">
+
+                                        <span class="badge @badgeClass px-2 py-1">
+
+                                            @statusText
+
+                                        </span>
+
+                                    </td>
+
+
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

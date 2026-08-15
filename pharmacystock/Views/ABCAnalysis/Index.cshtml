@@ -1,0 +1,573 @@
+﻿@using Newtonsoft.Json
+@using PharmacyStock.DTO.AnalysisDTO
+
+@model IEnumerable<ABCAnalysisDto>
+
+@{
+    ViewData["Title"] = "ABC Stok Analizi";
+
+    var modelList = Model?.ToList() ?? new List<ABCAnalysisDto>();
+
+    var totalProducts = modelList.Count;
+
+    var groupACount = modelList.Count(x => x.ABCClass == "A");
+    var groupBCount = modelList.Count(x => x.ABCClass == "B");
+    var groupCCount = modelList.Count(x => x.ABCClass == "C");
+
+    var topProducts = modelList
+        .OrderByDescending(x => x.AnnualValue)
+        .Take(5)
+        .ToList();
+
+    var topProductNames =
+        JsonConvert.SerializeObject(
+            topProducts.Select(x => x.Name)
+        );
+
+    var topProductValues =
+        JsonConvert.SerializeObject(
+            topProducts.Select(x => x.AnnualValue)
+        );
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/abc-analysis.css"
+          asp-append-version="true" />
+}
+
+
+<div class="container-fluid p-3"
+     id="abcAnalysisPage"
+     data-total-products="@totalProducts"
+     data-group-a="@groupACount"
+     data-group-b="@groupBCount"
+     data-group-c="@groupCCount"
+     data-top-product-names='@Html.Raw(topProductNames)'
+     data-top-product-values='@Html.Raw(topProductValues)'>
+
+
+    <!-- =====================================================
+         BAŞLIK
+    ====================================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h3 class="fw-bold mb-1">
+
+                <i class="bi bi-pie-chart-fill text-primary me-2"></i>
+
+                ABC Stok Analizi
+
+            </h3>
+
+
+            <p class="text-muted small mb-0">
+
+                En Değerli Ürünlerin Pareto (80/15/5) Dağılımı
+                ve Stok Değer Analizi
+
+            </p>
+
+        </div>
+
+
+        <div class="btn-group">
+
+            <button type="button"
+                    id="btnExportExcel"
+                    class="btn btn-outline-success btn-sm">
+
+                <i class="bi bi-file-earmark-excel me-1"></i>
+
+                Excel
+
+            </button>
+
+
+            <button type="button"
+                    id="btnExportPdf"
+                    class="btn btn-outline-danger btn-sm">
+
+                <i class="bi bi-file-earmark-pdf me-1"></i>
+
+                PDF
+
+            </button>
+
+
+            <button type="button"
+                    id="btnPrint"
+                    class="btn btn-outline-secondary btn-sm">
+
+                <i class="bi bi-printer me-1"></i>
+
+                Yazdır
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         A-B-C ÖZET KARTLARI
+    ====================================================== -->
+
+    <div class="row g-3 mb-4">
+
+
+        <!-- TOPLAM ÜRÜN -->
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+
+                        <span class="text-muted fw-semibold">
+
+                            Toplam Ürün
+
+                        </span>
+
+
+                        <div class="bg-primary bg-opacity-10 p-2 rounded">
+
+                            <i class="bi bi-box-seam text-primary fs-5"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <h2 class="fw-bold mb-1">
+                        @totalProducts
+                    </h2>
+
+
+                    <small class="text-muted">
+                        Analize dahil edilen ürün sayısı
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- A GRUBU -->
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm h-100 border-start border-success border-4">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+
+                        <span class="text-success fw-bold">
+                            🟢 A Grubu
+                        </span>
+
+
+                        <span class="badge bg-success">
+                            Yüksek Değer
+                        </span>
+
+                    </div>
+
+
+                    <h2 class="fw-bold mb-1">
+                        @groupACount
+                    </h2>
+
+
+                    <small class="text-muted d-block abc-card-description">
+
+                        Toplam satış değerinin yaklaşık
+                        <b>%80'ini</b> oluşturan kritik ürünler.
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- B GRUBU -->
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm h-100 border-start border-warning border-4">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+
+                        <span class="text-warning fw-bold">
+                            🟡 B Grubu
+                        </span>
+
+
+                        <span class="badge bg-warning text-dark">
+                            Orta Değer
+                        </span>
+
+                    </div>
+
+
+                    <h2 class="fw-bold mb-1">
+                        @groupBCount
+                    </h2>
+
+
+                    <small class="text-muted d-block abc-card-description">
+
+                        Orta seviyede satış ve ciro hacmine sahip ürünler.
+                        (~%15)
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- C GRUBU -->
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm h-100 border-start border-danger border-4">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+
+                        <span class="text-danger fw-bold">
+                            🔴 C Grubu
+                        </span>
+
+
+                        <span class="badge bg-danger">
+                            Düşük Değer
+                        </span>
+
+                    </div>
+
+
+                    <h2 class="fw-bold mb-1">
+                        @groupCCount
+                    </h2>
+
+
+                    <small class="text-muted d-block abc-card-description">
+
+                        Satış hacmi ve ciro katkısı düşük ürünler.
+                        (~%5)
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         GRAFİKLER
+    ====================================================== -->
+
+    <div class="row g-3 mb-4">
+
+
+        <!-- DOUGHNUT -->
+
+        <div class="col-md-5">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-header bg-transparent border-0 fw-bold pb-0">
+
+                    <i class="bi bi-donut-chart me-2 text-info"></i>
+
+                    A-B-C Dağılımı (Doughnut Chart)
+
+                </div>
+
+
+                <div class="card-body d-flex justify-content-center align-items-center abc-chart-wrapper">
+
+                    <canvas id="abcDoughnutChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- BAR -->
+
+        <div class="col-md-7">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-header bg-transparent border-0 fw-bold pb-0">
+
+                    <i class="bi bi-bar-chart-line-fill me-2 text-primary"></i>
+
+                    En Değerli İlk 5 Ürün (Bar Chart)
+
+                </div>
+
+
+                <div class="card-body abc-chart-wrapper">
+
+                    <canvas id="topProductsBarChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         TABLO
+    ====================================================== -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body">
+
+
+            <!-- TABLO BAŞLIK + ARAMA -->
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <h5 class="fw-bold mb-0">
+
+                    ABC Analiz Detay Listesi
+
+                </h5>
+
+
+                <div class="input-group abc-search">
+
+                    <span class="input-group-text bg-transparent border-end-0">
+
+                        <i class="bi bi-search text-muted"></i>
+
+                    </span>
+
+
+                    <input type="text"
+                           id="tableSearch"
+                           class="form-control border-start-0"
+                           placeholder="Ürün ara..."
+                           autocomplete="off" />
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TABLO -->
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0"
+                       id="abcTable">
+
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>
+                                Ürün Adı
+                            </th>
+
+                            <th class="text-center">
+                                Çıkış Adedi (Satış)
+                            </th>
+
+                            <th class="text-end">
+                                Yıllık Değer (₺)
+                            </th>
+
+                            <th class="text-center">
+                                Ciro Payı (%)
+                            </th>
+
+                            <th class="text-center">
+                                Kümülatif Pay (%)
+                            </th>
+
+                            <th class="text-center">
+                                ABC Sınıfı
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+                        @if (modelList.Any())
+                              {
+                           foreach (var item in modelList)
+    {
+                                <tr>
+
+                                    <!-- ÜRÜN -->
+
+                                    <td class="fw-semibold">
+
+                                        <i class="bi bi-capsule-pill text-primary me-2"></i>
+
+                                        @item.Name
+
+                                    </td>
+
+
+                                    <!-- SATIŞ -->
+
+                                    <td class="text-center">
+
+                                        @item.TotalStockOut
+
+                                    </td>
+
+
+                                    <!-- YILLIK DEĞER -->
+
+                                    <td class="text-end fw-semibold font-monospace">
+
+                                        ₺@item.AnnualValue.ToString("N2")
+
+                                    </td>
+
+
+                                    <!-- CİRO PAYI -->
+
+                                    <td class="text-center">
+
+                                        %@item.Percentage.ToString("N2")
+
+                                    </td>
+
+
+                                    <!-- KÜMÜLATİF PAY -->
+
+                                    <td class="text-center">
+
+                                        <div class="progress mb-1 abc-progress">
+
+                                            <div class="progress-bar bg-info"
+                                                 role="progressbar"
+                                                 style="width:@item.CumulativePercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%"
+                                                 aria-valuenow="@item.CumulativePercentage"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="100">
+                                            </div>
+
+                                        </div>
+
+
+                                        <small class="text-muted">
+
+                                            %@item.CumulativePercentage.ToString("N2")
+
+                                        </small>
+
+                                    </td>
+
+
+                                    <!-- ABC SINIFI -->
+
+                                    <td class="text-center">
+
+                                        @if (item.ABCClass == "A")
+                                        {
+                                            <span class="badge bg-success px-3 py-2">
+                                                🟢 A
+                                            </span>
+                                        }
+                                        else if (item.ABCClass == "B")
+                                        {
+                                            <span class="badge bg-warning text-dark px-3 py-2">
+                                                🟡 B
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger px-3 py-2">
+                                                🔴 C
+                                            </span>
+                                        }
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td colspan="6"
+                                    class="text-center text-muted py-5">
+
+                                    Analiz verisi bulunamadı.
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="~/js/abc-analysis.js"
+            asp-append-version="true"></script>
+
+}

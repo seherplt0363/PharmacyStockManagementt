@@ -1,0 +1,92 @@
+@model PharmacyStock.DTO.DashboardDTO.DashboardDto
+
+<div class="row g-3">
+
+    <!-- ==========================================
+         SON 7 GÜNLÜK STOK HAREKETLERİ
+         ========================================== -->
+    <div class="col-12 col-xl-6">
+
+        <div class="dashboard-chart-card">
+
+            <!-- Kart Başlığı -->
+            <div class="dashboard-chart-header">
+
+                <div class="dashboard-chart-title-wrapper">
+
+                    <div class="dashboard-chart-icon stock-chart-icon">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+
+                    <div>
+                        <h5 class="dashboard-chart-title">
+                            Son 7 Günlük Stok Hareketleri
+                        </h5>
+
+                        <p class="dashboard-chart-subtitle">
+                            Stok giriş ve çıkış hareketleri
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Grafik -->
+            <div class="dashboard-chart-body">
+
+                <div class="dashboard-chart-container">
+                    <canvas id="stockChart"></canvas>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         EN ÇOK İŞLEM GÖREN ÜRÜNLER
+         ========================================== -->
+    <div class="col-12 col-xl-6">
+
+        <div class="dashboard-chart-card">
+
+            <!-- Kart Başlığı -->
+            <div class="dashboard-chart-header">
+
+                <div class="dashboard-chart-title-wrapper">
+
+                    <div class="dashboard-chart-icon product-chart-icon">
+                        <i class="bi bi-bar-chart-fill"></i>
+                    </div>
+
+                    <div>
+                        <h5 class="dashboard-chart-title">
+                            En Çok İşlem Gören Ürünler
+                        </h5>
+
+                        <p class="dashboard-chart-subtitle">
+                            En fazla stok hareketi yapılan ürünler
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Grafik -->
+            <div class="dashboard-chart-body">
+
+                <div class="dashboard-chart-container top-products-container">
+                    <canvas id="topProductsChart"></canvas>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

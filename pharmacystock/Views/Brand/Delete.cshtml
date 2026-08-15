@@ -1,0 +1,107 @@
+﻿@model PharmacyStock.DTO.BrandDTO.BrandListDto
+
+@{
+    ViewData["Title"] = "Marka Sil";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-danger text-white">
+
+            <h3 class="mb-0">
+                🗑️ Marka Sil
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="alert alert-danger">
+
+                <strong>Dikkat!</strong>
+                Bu markayı silmek istediğinize emin misiniz?
+
+                <br />
+
+                Bu işlem geri alınamaz.
+
+            </div>
+
+            <div class="row mb-3">
+
+                <div class="col-md-4 fw-bold">
+                    ID
+                </div>
+
+                <div class="col-md-8">
+                    @Model.Id
+                </div>
+
+            </div>
+
+            <div class="row mb-3">
+
+                <div class="col-md-4 fw-bold">
+                    Marka Adı
+                </div>
+
+                <div class="col-md-8">
+                    @Model.Name
+                </div>
+
+            </div>
+
+            <div class="row mb-4">
+
+                <div class="col-md-4 fw-bold">
+                    Bağlı Ürün Sayısı
+                </div>
+
+                <div class="col-md-8">
+
+                    <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">
+                        @Model.ProductCount
+                    </span>
+
+                </div>
+
+            </div>
+
+            <hr />
+
+            <form asp-action="Delete"
+                  asp-route-id="@Model.Id"
+                  method="post">
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary">
+
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Vazgeç
+
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-danger">
+
+                        <i class="bi bi-trash me-1"></i>
+                        Sil
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

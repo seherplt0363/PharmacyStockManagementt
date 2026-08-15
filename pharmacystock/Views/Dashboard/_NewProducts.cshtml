@@ -1,0 +1,152 @@
+@model PharmacyStock.DTO.DashboardDTO.DashboardDto
+
+<div class="card shadow border-0 h-100 dashboard-new-products w-100">
+
+    <!-- HEADER -->
+    <div class="card-header border-0 d-flex justify-content-between align-items-center py-2">
+
+        <h6 class="mb-0 fw-bold d-flex align-items-center gap-2">
+
+            <i class="bi bi-plus-circle-fill text-success"></i>
+
+            <span>
+                Son Eklenen Ürünler
+            </span>
+
+        </h6>
+
+
+        <span class="badge rounded-pill bg-success-subtle text-success px-3">
+
+            @Model.NewProducts.Count
+
+        </span>
+
+    </div>
+
+
+    <!-- BODY -->
+    <div class="card-body p-2">
+
+        @if (!Model.NewProducts.Any())
+        {
+            <div class="text-center text-muted py-4">
+
+                <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+
+                Henüz ürün bulunmuyor.
+
+            </div>
+        }
+        else
+        {
+            @foreach (var item in Model.NewProducts)
+            {
+                <div class="card mb-2 border-0 shadow-sm product-list-card">
+
+                    <div class="card-body py-2 px-3">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div class="d-flex align-items-center">
+
+                                <!-- ICON -->
+                                <div class="rounded-circle d-flex justify-content-center align-items-center product-icon">
+
+                                    <i class="bi bi-capsule"></i>
+
+                                </div>
+
+
+                                <!-- INFO -->
+                                <div class="ms-3">
+
+                                    <div class="fw-bold product-name">
+
+                                        @item.Name
+
+                                    </div>
+
+
+                                    <div class="d-flex gap-3 product-info">
+
+                                        <span>
+
+                                            <i class="bi bi-building me-1"></i>
+
+                                            @(string.IsNullOrWhiteSpace(item.BrandName)
+                                                ? "-"
+                                                : item.BrandName)
+
+                                        </span>
+
+
+                                        <span>
+
+                                            <i class="bi bi-tag me-1"></i>
+
+                                            @(string.IsNullOrWhiteSpace(item.CategoryName)
+                                                ? "-"
+                                                : item.CategoryName)
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <i class="bi bi-chevron-right text-secondary"></i>
+
+                        </div>
+
+
+                        <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+
+                            <span class="badge stock-badge">
+
+                                <i class="bi bi-box-seam me-1"></i>
+
+                                @item.CurrentStock
+
+                            </span>
+
+
+                            @if (item.CurrentStock == 0)
+                            {
+                                <span class="badge bg-danger-subtle text-danger rounded-pill">
+
+                                    Tükendi
+
+                                </span>
+                            }
+                            else if (item.CurrentStock <= item.MinimumStock)
+                            {
+                                <span class="badge bg-warning-subtle text-warning rounded-pill">
+
+                                    Kritik Stok
+
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success-subtle text-success rounded-pill">
+
+                                    Stokta
+
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        }
+
+    </div>
+
+</div>

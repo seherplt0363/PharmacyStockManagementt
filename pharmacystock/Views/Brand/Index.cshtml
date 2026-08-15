@@ -1,0 +1,238 @@
+﻿@model IEnumerable<PharmacyStock.DTO.BrandDTO.BrandListDto>
+
+@{
+    ViewData["Title"] = "Markalar";
+}
+
+<div class="container-fluid py-3">
+
+    <!-- ANA KART -->
+    <div class="card page-card shadow-sm border-0 rounded-3">
+        <div class="card-body p-4">
+
+            <!-- ÜST BAŞLIK VE BUTON -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+                <div class="d-flex align-items-center gap-2">
+
+                    <span class="fs-4 text-warning">🏷️</span>
+
+                    <h3 class="fw-bold mb-0 page-title-text">
+                        Marka Yönetimi
+                    </h3>
+
+                    <span class="badge rounded-pill bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 ms-2">
+                        @Model.Count() Marka
+                    </span>
+
+                </div>
+
+                <a asp-action="Create"
+                   class="btn btn-primary d-inline-flex align-items-center gap-2 rounded-3 shadow-sm px-3">
+
+                    <i class="bi bi-plus-lg"></i>
+
+                    Yeni Marka
+
+                </a>
+
+            </div>
+
+
+            <!-- İÇERİK -->
+            @if (!Model.Any())
+            {
+                <div class="alert custom-alert-info d-flex align-items-center gap-2 p-3 rounded-3 mb-0">
+
+                    <i class="bi bi-info-circle-fill fs-5"></i>
+
+                    <div>
+                        Henüz sistemde kayıtlı bir marka bulunmuyor.
+                    </div>
+
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-custom align-middle mb-0">
+
+                        <thead>
+
+                            <tr>
+
+                                <th style="width: 100px;">
+                                    ID
+                                </th>
+
+                                <th>
+                                    MARKA ADI
+                                </th>
+
+                                <th class="text-center">
+                                    ÜRÜN SAYISI
+                                </th>
+
+                                <th class="text-end"
+                                    style="width: 180px;">
+                                    İŞLEMLER
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <td class="fw-medium text-muted">
+                                        @item.Id
+                                    </td>
+
+                                    <td class="fw-semibold text-main">
+                                        @item.Name
+                                    </td>
+
+                                    <td class="text-center">
+
+                                        <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2">
+
+                                            @item.ProductCount
+
+                                        </span>
+
+                                    </td>
+
+                                    <td class="text-end">
+
+                                        <div class="btn-group btn-group-sm rounded-2 overflow-hidden shadow-sm">
+
+                                            <a asp-action="Details"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-info text-white"
+                                               title="Detay">
+
+                                                <i class="bi bi-eye"></i>
+
+                                            </a>
+
+                                            <a asp-action="Edit"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-warning text-white"
+                                               title="Düzenle">
+
+                                                <i class="bi bi-pencil"></i>
+
+                                            </a>
+
+                                            <a asp-action="Delete"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-danger"
+                                               title="Sil">
+
+                                                <i class="bi bi-trash"></i>
+
+                                            </a>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>
+
+
+<style>
+
+    /* ============================================================
+           LIGHT MODE
+           ============================================================ */
+
+    .page-card {
+        background-color: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .page-title-text,
+    .text-main {
+        color: #1a202c !important;
+    }
+
+    .table-custom {
+        color: #2d3748;
+    }
+
+        .table-custom thead th {
+            background-color: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 0.85rem 1rem;
+        }
+
+        .table-custom tbody td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+    .custom-alert-info {
+        background-color: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #1e40af;
+    }
+
+
+    /* ============================================================
+           DARK MODE
+           ============================================================ */
+
+    body.dark-mode .page-card {
+        background-color: #1e1e2d !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+
+    body.dark-mode .page-title-text,
+    body.dark-mode .text-main {
+        color: #ffffff !important;
+    }
+
+    body.dark-mode .table-custom {
+        color: #cbd5e1;
+    }
+
+        body.dark-mode .table-custom thead th {
+            background-color: #151521;
+            color: #94a3b8;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+        }
+
+        body.dark-mode .table-custom tbody td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+    body.dark-mode .custom-alert-info {
+        background-color: rgba(30, 64, 175, 0.2);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        color: #93c5fd;
+    }
+
+</style>

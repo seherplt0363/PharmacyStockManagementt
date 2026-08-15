@@ -1,0 +1,734 @@
+@model IEnumerable<PharmacyStock.DTO.OrderDraftDTO.OrderDraftDto>
+
+@using PharmacyStock.DTO.SupplierDTO
+
+@{
+    ViewData["Title"] = "Sipariş Taslağı";
+
+    var modelList =
+        Model?.ToList()
+        ?? new List<PharmacyStock.DTO.OrderDraftDTO.OrderDraftDto>();
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/order-draft.css"
+          asp-append-version="true" />
+}
+
+<div class="container-fluid py-4"
+     id="orderDraftPage"
+     data-send-url="@Url.Action("SendToSupplier", "OrderDraft")">
+
+    @Html.AntiForgeryToken()
+
+
+    <!-- =====================================================
+         BAŞLIK VE AKSİYON BUTONLARI
+    ====================================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h1 class="fw-bold mb-1 order-title">
+
+                <i class="fas fa-clipboard-list text-primary me-2"></i>
+
+                Akıllı Sipariş Taslağı
+
+            </h1>
+
+
+            <p class="mb-1 order-description">
+
+                Karar destek sistemi tarafından analiz edilen ve
+                sipariş önerisi oluşturulan ürünler.
+
+            </p>
+
+
+            <small class="order-update">
+
+                <i class="fas fa-clock me-1"></i>
+
+                Son Güncelleme :
+                @DateTime.Now.ToString("dd.MM.yyyy HH:mm")
+
+            </small>
+
+        </div>
+
+
+        <div class="btn-group">
+
+            <!-- PDF -->
+
+            <a asp-action="ExportPdf"
+               class="btn btn-danger"
+               role="button">
+
+                <i class="fas fa-file-pdf me-1"></i>
+
+                PDF
+
+            </a>
+
+
+            <!-- EXCEL -->
+
+            <a asp-action="ExportExcel"
+               class="btn btn-success"
+               role="button">
+
+                <i class="fas fa-file-excel me-1"></i>
+
+                Excel
+
+            </a>
+
+
+            <!-- YAZDIR -->
+
+            <button type="button"
+                    id="btnPrint"
+                    class="btn btn-secondary">
+
+                <i class="fas fa-print me-1"></i>
+
+                Yazdır
+
+            </button>
+
+
+            <!-- TEDARİKÇİYE GÖNDER -->
+            @if (User.IsInRole("Admin") || User.IsInRole("Yetkili"))
+            {
+                <button type="button"
+                        class="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#sendSupplierModal">
+
+                    <i class="fas fa-paper-plane me-1"></i>
+
+                    Tedarikçiye Gönder
+
+                </button>
+            }
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         ÖZET KARTLARI
+    ====================================================== -->
+
+    <div class="row g-3 mb-4">
+
+
+        <!-- ACİL SİPARİŞ -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card summary-card card-urgent h-100 border-0 shadow-sm">
+
+                <div class="card-body p-3 d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <span class="card-label text-danger fw-bold">
+
+                            Acil Sipariş
+
+                        </span>
+
+
+                        <h2 class="fw-bold text-danger my-1 display-6">
+
+                            @modelList.Count(x => x.Priority == "Acil")
+
+                        </h2>
+
+
+                        <span class="card-subtext">
+
+                            Bugün sipariş bekleyen
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="icon-box bg-danger-subtle text-danger">
+
+                        <i class="fas fa-triangle-exclamation fa-lg"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SİPARİŞ VERİLECEK -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card summary-card card-primary h-100 border-0 shadow-sm">
+
+                <div class="card-body p-3 d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <span class="card-label text-primary fw-bold">
+
+                            Sipariş Verilecek
+
+                        </span>
+
+
+                        <h2 class="fw-bold text-primary my-1 display-6">
+
+                            @modelList.Count(
+                                x => x.SuggestedOrderQuantity > 0
+                            )
+
+                        </h2>
+
+
+                        <span class="card-subtext">
+
+                            Öneri oluşturuldu
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="icon-box bg-primary-subtle text-primary">
+
+                        <i class="fas fa-boxes-stacked fa-lg"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- KRİTİK ÜRÜN -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card summary-card card-warning h-100 border-0 shadow-sm">
+
+                <div class="card-body p-3 d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <span class="card-label text-warning-emphasis fw-bold">
+
+                            Kritik Ürün
+
+                        </span>
+
+
+                        <h2 class="fw-bold text-warning my-1 display-6">
+
+                            @modelList.Count(
+                                x => x.CurrentStock <= x.MinimumStock
+                            )
+
+                        </h2>
+
+
+                        <span class="card-subtext">
+
+                            Minimum stok altında
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="icon-box bg-warning-subtle text-warning">
+
+                        <i class="fas fa-circle-exclamation fa-lg"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ORTALAMA DEVİR -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card summary-card card-success h-100 border-0 shadow-sm">
+
+                <div class="card-body p-3 d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <span class="card-label text-success fw-bold">
+
+                            Ortalama Devir
+
+                        </span>
+
+
+                        <h2 class="fw-bold text-success my-1 display-6">
+
+                            %@(
+                            modelList.Any()
+                                ? Math.Round(
+                                    modelList.Average(
+                                        x => x.TurnoverRate
+                                    ),
+                                    1
+                                )
+                                : 0
+                                                    )
+
+                        </h2>
+
+
+                        <span class="card-subtext">
+
+                            Son analiz ortalaması
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="icon-box bg-success-subtle text-success">
+
+                        <i class="fas fa-chart-line fa-lg"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SİPARİŞ ÖNERİ TABLOSU
+    ====================================================== -->
+
+    <div class="card order-table-card border-0 shadow-sm rounded-4 mb-4">
+
+
+        <!-- TABLO BAŞLIK -->
+
+        <div class="card-header bg-transparent py-3">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+
+                <h4 class="mb-0 order-table-title fw-bold">
+
+                    <i class="fas fa-list-check me-2 text-info"></i>
+
+                    Sipariş Öneri Listesi
+
+                </h4>
+
+
+                <input id="tableSearch"
+                       type="search"
+                       class="form-control w-25 search-input"
+                       placeholder="🔍 İlaç Ara..."
+                       autocomplete="off" />
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TABLO -->
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            İlaç
+                        </th>
+
+                        <th class="text-center">
+                            Stok
+                        </th>
+
+                        <th class="text-center">
+                            Min
+                        </th>
+
+                        <th class="text-center">
+                            30 Gün Satış
+                        </th>
+
+                        <th class="text-center">
+                            Günlük Ort.
+                        </th>
+
+                        <th class="text-center">
+                            Kalan Gün
+                        </th>
+
+                        <th class="text-center">
+                            Devir
+                        </th>
+
+                        <th class="text-center">
+                            Skor
+                        </th>
+
+                        <th class="text-center">
+                            Öneri
+                        </th>
+
+                        <th class="text-center">
+                            Öncelik
+                        </th>
+
+                        <th>
+                            Gerekçe
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <tbody id="draftTableBody">
+
+                    @foreach (var item in modelList)
+                    {
+                        var badge =
+                            item.Priority == "Acil"
+                                ? "bg-danger"
+
+                            : item.Priority == "Sipariş Ver"
+                                ? "bg-warning text-dark"
+
+                            : item.Priority == "Takip Et"
+                                ? "bg-info text-dark"
+
+                            : "bg-secondary";
+
+
+                        bool hasOrder =
+                            item.SuggestedOrderQuantity > 0;
+
+
+                        <tr class="@(!hasOrder ? "opacity-75" : "")">
+
+
+                            <!-- İLAÇ -->
+
+                            <td class="fw-bold">
+
+                                @item.ProductName
+
+                            </td>
+
+
+                            <!-- MEVCUT STOK -->
+
+                            <td class="text-center fw-semibold">
+
+                                @item.CurrentStock
+
+                            </td>
+
+
+                            <!-- MINIMUM STOK -->
+
+                            <td class="text-center text-muted">
+
+                                @item.MinimumStock
+
+                            </td>
+
+
+                            <!-- SON 30 GÜN SATIŞ -->
+
+                            <td class="text-center">
+
+                                @item.Last30DaysSales
+
+                            </td>
+
+
+                            <!-- GÜNLÜK ORTALAMA -->
+
+                            <td class="text-center">
+
+                                @item.DailyAverageConsumption.ToString("0.0")
+
+                            </td>
+
+
+                            <!-- KALAN GÜN -->
+
+                            <td class="text-center">
+
+                                @(
+                                    item.DaysRemaining >= 999
+                                        ? "∞"
+                                        : $"{item.DaysRemaining} Gün"
+                                )
+
+                            </td>
+
+
+                            <!-- DEVİR -->
+
+                            <td class="text-center">
+
+                                %@item.TurnoverRate.ToString("0.0")
+
+                            </td>
+
+
+                            <!-- SKOR -->
+
+                            <td class="text-center">
+
+                                <span class="badge bg-dark border border-warning text-warning">
+
+                                    @item.PriorityScore
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- ÖNERİ -->
+
+                            <td class="text-center fw-bold @(hasOrder ? "text-success" : "text-muted")">
+
+                                @(
+                                    hasOrder
+                                        ? $"{item.SuggestedOrderQuantity} Kutu"
+                                        : "-"
+                                )
+
+                            </td>
+
+
+                            <!-- ÖNCELİK -->
+
+                            <td class="text-center">
+
+                                <span class="badge rounded-pill @badge">
+
+                                    @item.Priority
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- GEREKÇE -->
+
+                            <td class="small reason-cell">
+
+                                @item.Reason
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     TEDARİKÇİYE GÖNDER MODALI
+===================================================== -->
+
+<div class="modal fade"
+     id="sendSupplierModal"
+     tabindex="-1"
+     aria-labelledby="sendSupplierModalLabel"
+     aria-hidden="true">
+
+
+    <div class="modal-dialog modal-dialog-centered">
+
+
+        <div class="modal-content bg-dark text-white border-secondary">
+
+
+            <!-- MODAL HEADER -->
+
+            <div class="modal-header border-secondary">
+
+                <h5 class="modal-title fw-bold"
+                    id="sendSupplierModalLabel">
+
+                    <i class="fas fa-paper-plane text-primary me-2"></i>
+
+                    Tedarikçiye Gönder
+
+                </h5>
+
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"
+                        aria-label="Kapat">
+                </button>
+
+            </div>
+
+
+
+            <!-- MODAL BODY -->
+
+            <div class="modal-body">
+
+                <p class="text-secondary small">
+
+                    Sipariş taslağındaki tüm kalemler bir PDF raporu
+                    haline getirilecek ve seçtiğiniz tedarikçinin
+                    kayıtlı e-posta adresine asenkron olarak
+                    gönderilecektir.
+
+                </p>
+
+
+                <div class="mb-3">
+
+                    <label for="supplierSelect"
+                           class="form-label fw-bold text-info">
+
+                        Tedarikçi Seçin
+
+                    </label>
+
+
+                    <select id="supplierSelect"
+                            class="form-select bg-secondary border-0 text-white">
+
+
+                        <option value="">
+
+                            -- Tedarikçi Seçiniz --
+
+                        </option>
+
+
+                        @if (ViewBag.Suppliers != null)
+                        {
+                            foreach (
+                                var supplier
+                                in (IEnumerable<SupplierListDto>)ViewBag.Suppliers
+                            )
+                            {
+                                <option value="@supplier.Id">
+
+                                    @supplier.Name (@supplier.Email)
+
+                                </option>
+                            }
+                        }
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- MODAL FOOTER -->
+
+            <div class="modal-footer border-secondary">
+
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    İptal
+
+                </button>
+
+
+                <button type="button"
+                        id="btnConfirmSend"
+                        class="btn btn-primary">
+
+
+                    <span id="btnSendSpinner"
+                          class="spinner-border spinner-border-sm d-none"
+                          role="status"
+                          aria-hidden="true">
+                    </span>
+
+
+                    <span id="btnSendText">
+
+                        Onayla ve Gönder
+
+                    </span>
+
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+
+    <script src="~/js/order-draft.js"
+            asp-append-version="true">
+    </script>
+
+}

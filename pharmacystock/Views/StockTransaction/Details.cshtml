@@ -1,0 +1,210 @@
+@model PharmacyStock.DTO.StockTransactionDTO.StockTransactionListDto
+
+@using PharmacyStock.Entities.Enum
+
+@{
+    ViewData["Title"] = "Stok Hareketi Detayları";
+}
+
+<div class="container-fluid mt-4">
+
+    <div class="card shadow border-0 max-width-800 mx-auto">
+
+        <div class="card-header bg-info text-white">
+
+            <h3 class="mb-0">
+                <i class="bi bi-info-circle-fill"></i>
+                Stok Hareketi Detayı
+            </h3>
+
+        </div>
+
+        <div class="card-body p-4">
+
+            <div class="row mb-4">
+
+                <!-- ÜRÜN BİLGİLERİ -->
+                <div class="col-md-6">
+
+                    <h5 class="text-muted fw-bold">
+                        Ürün Bilgileri
+                    </h5>
+
+                    <hr />
+
+                    <p>
+                        <strong>Ürün Adı:</strong>
+                        @(string.IsNullOrWhiteSpace(Model.ProductName)
+                            ? "-"
+                            : Model.ProductName)
+                    </p>
+
+                    <p>
+                        <strong>Ürün ID:</strong>
+                        @Model.ProductId
+                    </p>
+
+                </div>
+
+
+                <!-- İŞLEM BİLGİLERİ -->
+                <div class="col-md-6">
+
+                    <h5 class="text-muted fw-bold">
+                        İşlem Bilgileri
+                    </h5>
+
+                    <hr />
+
+                    <p>
+
+                        <strong>İşlem Türü:</strong>
+
+                        @if (Model.Type == TransactionType.In)
+                        {
+                            <span class="badge bg-success">
+
+                                <i class="bi bi-box-arrow-in-down"></i>
+
+                                Giriş
+
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">
+
+                                <i class="bi bi-box-arrow-up"></i>
+
+                                Çıkış
+
+                            </span>
+                        }
+
+                    </p>
+
+                    <p>
+                        <strong>Miktar:</strong>
+                        @Model.Quantity Adet
+                    </p>
+
+                    <p>
+                        <strong>İşlem Tarihi:</strong>
+                        @Model.TransactionDate.ToString("dd.MM.yyyy HH:mm")
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- KULLANICI / EK BİLGİ -->
+            <div class="row mb-4">
+
+                <div class="col-12">
+
+                    <h5 class="text-muted fw-bold">
+                        Kullanıcı & Ek Bilgiler
+                    </h5>
+
+                    <hr />
+
+                    <p>
+                        <strong>İşlemi Yapan:</strong>
+                        @(string.IsNullOrWhiteSpace(Model.PerformedBy)
+                            ? "-"
+                            : Model.PerformedBy)
+                    </p>
+
+
+                    <p>
+                        <strong>Notlar / Açıklama:</strong>
+                    </p>
+
+                    <div class="p-3 bg-light border rounded-3 mb-3">
+
+                        @(string.IsNullOrWhiteSpace(Model.Notes)
+                            ? "Kayıtlı bir not bulunmuyor."
+                            : Model.Notes)
+
+                    </div>
+
+
+                    <p>
+                        <strong>Seri Numaraları:</strong>
+                    </p>
+
+                    <div class="p-3 bg-light border rounded-3"
+                         style="max-height:150px; overflow-y:auto; font-family:monospace;">
+
+                        @if (string.IsNullOrWhiteSpace(Model.SerialNumbers))
+                        {
+                            <span>
+                                Seri numarası girilmemiş.
+                            </span>
+                        }
+                        else
+                        {
+                            @Html.Raw(
+                                Model.SerialNumbers.Replace(
+                                    "\n",
+                                    "<br/>"
+                                )
+                            )
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <hr class="my-4" />
+
+
+            <!-- BUTONLAR -->
+            <div class="d-flex justify-content-between">
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+
+                    <i class="bi bi-arrow-left"></i>
+
+                    Listeye Dön
+
+                </a>
+
+
+                <div class="d-flex gap-2">
+
+                    <a asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-warning text-white">
+
+                        <i class="bi bi-pencil"></i>
+
+                        Düzenle
+
+                    </a>
+
+
+                    <a asp-action="Delete"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-danger">
+
+                        <i class="bi bi-trash"></i>
+
+                        Sil
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

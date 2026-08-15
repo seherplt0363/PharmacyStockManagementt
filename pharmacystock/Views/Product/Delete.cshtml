@@ -1,0 +1,138 @@
+﻿@model PharmacyStock.DTO.ProductDTO.ProductListDto
+
+@{
+    ViewData["Title"] = "Ürün Sil";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0">
+                🗑 Ürün Sil
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <!-- UYARI -->
+            <div class="alert alert-danger">
+
+                <h5>
+                    Bu ürünü silmek istediğinize emin misiniz?
+                </h5>
+
+                <p class="mb-0">
+                    Bu işlem geri alınamaz.
+                </p>
+
+            </div>
+
+
+            <!-- ÜRÜN BİLGİLERİ -->
+            <table class="table">
+
+                <tr>
+                    <th>Ürün</th>
+                    <td>@Model.Name</td>
+                </tr>
+
+                <tr>
+                    <th>Barkod</th>
+                    <td>@Model.Barcode</td>
+                </tr>
+
+                <tr>
+                    <th>Kategori</th>
+                    <td>
+                        @(string.IsNullOrWhiteSpace(Model.CategoryName)
+                            ? "-"
+                            : Model.CategoryName)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Marka</th>
+                    <td>
+                        @(string.IsNullOrWhiteSpace(Model.BrandName)
+                            ? "-"
+                            : Model.BrandName)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Fiyat</th>
+                    <td>@Model.Price.ToString("C")</td>
+                </tr>
+
+                <tr>
+                    <th>Mevcut Stok</th>
+                    <td>
+                        @if (Model.CurrentStock > 0)
+                        {
+                            <span class="badge bg-success">
+                                @Model.CurrentStock Adet
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">
+                                Tükendi
+                            </span>
+                        }
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Minimum Stok</th>
+                    <td>@Model.MinimumStock Adet</td>
+                </tr>
+
+                <tr>
+                    <th>Son Kullanma Tarihi</th>
+                    <td>
+                        @if (Model.ExpirationDate != DateTime.MinValue)
+                        {
+                            @Model.ExpirationDate.ToString("dd.MM.yyyy")
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+                    </td>
+                </tr>
+
+            </table>
+
+
+            <!-- SİL FORMU -->
+            <form asp-action="Delete"
+                  asp-route-id="@Model.Id"
+                  method="post">
+
+                <input asp-for="Id"
+                       type="hidden" />
+
+                <button type="submit"
+                        class="btn btn-danger">
+
+                    <i class="bi bi-trash me-1"></i>
+                    Sil
+
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+
+                    Vazgeç
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

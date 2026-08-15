@@ -1,0 +1,101 @@
+﻿@model pharmacystock.Models.ViewModels.LoginViewModel
+
+@{
+    Layout = "_AccountLayout";
+    ViewData["Title"] = "Giriş Yap";
+}
+
+<div class="account-wrapper">
+
+    <!-- SOL TARAF -->
+    <div class="left-side">
+
+        <i class="bi bi-capsule-pill"></i>
+
+        <h1>Pharmacy Stock</h1>
+        <h2>Management System</h2>
+
+        <p>
+            İlaç stoklarınızı güvenle yönetin.<br />
+            Akıllı analizlerle stok takibini kolaylaştırın.<br />
+            Modern ve güvenli eczane yönetim sistemi.
+        </p>
+
+        <div class="features">
+            <div class="feature">
+                📦 Akıllı Stok Takibi
+            </div>
+            <div class="feature">
+                📊 Dashboard Analizleri
+            </div>
+            <div class="feature">
+                🔔 Düşük Stok Bildirimleri
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SAĞ TARAF -->
+    <div class="right-side">
+
+        <h2 class="form-title">Giriş Yap</h2>
+
+        <form asp-action="Login" method="post" autocomplete="off">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <!-- Email / Kullanıcı Adı -->
+            <div class="form-field-group">
+                <label asp-for="Email" class="custom-label">Email / Kullanıcı Adı</label>
+                <div class="custom-input-box">
+                    <i class="bi bi-person input-icon"></i>
+                    <input asp-for="Email" class="custom-input" placeholder="admin" />
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <!-- Password / Parola -->
+            <div class="form-field-group">
+                <label asp-for="Password" class="custom-label">Password / Parola</label>
+                <div class="custom-input-box">
+                    <i class="bi bi-lock input-icon"></i>
+                    <input asp-for="Password" class="custom-input" placeholder="••••••••" />
+                    <i class="bi bi-eye-slash toggle-icon"></i>
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-row-between">
+                <label class="custom-checkbox">
+                    <input asp-for="RememberMe" type="checkbox" />
+                    <span class="checkmark"></span>
+                    Beni Hatırla
+                </label>
+
+                <a asp-action="ForgotPassword" class="forgot-link">
+                    Şifremi Unuttum?
+                </a>
+            </div>
+
+            <button type="submit" class="btn-glow-login">
+                <i class="bi bi-box-arrow-in-right"></i>
+                <span>Giriş Yap</span>
+            </button>
+
+        </form>
+
+        <div class="register-footer">
+            <p>Hesabın yok mu?</p>
+            <a asp-controller="Account" asp-action="Register" class="register-btn-modern">
+                <i class="bi bi-person-plus-fill"></i>
+                <span>Kayıt Ol</span>
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

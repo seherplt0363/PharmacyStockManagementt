@@ -1,0 +1,291 @@
+﻿@model IEnumerable<PharmacyStock.DTO.ProductDTO.ProductListDto>
+
+@{
+    ViewData["Title"] = "Ürünler";
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/product-index.css"
+          asp-append-version="true" />
+}
+
+<div class="container-fluid py-3">
+
+    <!-- =====================================================
+         ANA KART
+    ====================================================== -->
+
+    <div class="card product-card shadow-sm border-0 rounded-3">
+
+        <div class="card-body p-4">
+
+            <!-- =================================================
+                 BAŞLIK + YENİ ÜRÜN
+            ================================================== -->
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <div class="d-flex align-items-center gap-2">
+
+                    <span class="fs-4">📦</span>
+
+                    <h3 class="fw-bold mb-0 product-title-text">
+                        Ürün Yönetimi
+                    </h3>
+
+                </div>
+
+
+                <a asp-action="Create"
+                   class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 rounded-pill px-3 fw-semibold add-product-btn">
+
+                    <i class="bi bi-plus-circle"></i>
+
+                    Yeni Ürün
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 ARAMA
+            ================================================== -->
+
+            <form method="get"
+                  class="mb-4">
+
+                <div class="row g-2 align-items-center">
+
+                    <div class="col-md-5 col-lg-4">
+
+                        <input type="text"
+                               name="search"
+                               value="@Context.Request.Query["search"]"
+                               class="form-control product-search-input"
+                               placeholder="Ürün veya barkod ara..."
+                               autocomplete="off" />
+
+                    </div>
+
+
+                    <div class="col-auto">
+
+                        <button type="submit"
+                                class="btn btn-search text-white d-inline-flex align-items-center gap-2 px-4">
+
+                            <i class="bi bi-search"></i>
+
+                            Ara
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+
+            <!-- =================================================
+                 ÜRÜN TABLOSU
+            ================================================== -->
+
+            <div class="table-responsive">
+
+                <table class="table table-borderless custom-table align-middle mb-0">
+
+                    <thead>
+
+                        <tr>
+
+                            <th class="product-id-column">
+                                ID
+                            </th>
+
+                            <th>
+                                ÜRÜN
+                            </th>
+
+                            <th>
+                                BARKOD
+                            </th>
+
+                            <th>
+                                KATEGORİ
+                            </th>
+
+                            <th>
+                                MARKA
+                            </th>
+
+                            <th class="text-end">
+                                FİYAT
+                            </th>
+
+                            <th class="text-center">
+                                STOK
+                            </th>
+
+                            <th class="text-end product-actions-column">
+                                İŞLEMLER
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <!-- ID -->
+
+                                <td class="text-muted fs-7">
+
+                                    @item.Id
+
+                                </td>
+
+
+                                <!-- ÜRÜN -->
+
+                                <td class="fw-bold product-name">
+
+                                    @item.Name
+
+                                </td>
+
+
+                                <!-- BARKOD -->
+
+                                <td class="barcode-text">
+
+                                    @item.Barcode
+
+                                </td>
+
+
+                                <!-- KATEGORİ -->
+
+                                <td>
+
+                                    @item.CategoryName
+
+                                </td>
+
+
+                                <!-- MARKA -->
+
+                                <td>
+
+                                    @item.BrandName
+
+                                </td>
+
+
+                                <!-- FİYAT -->
+
+                                <td class="text-end fw-semibold">
+
+                                    @item.Price.ToString("C")
+
+                                </td>
+
+
+                                <!-- STOK -->
+
+                                <td class="text-center">
+
+                                    @if (item.CurrentStock > 20)
+                                    {
+                                        <span class="badge stock-badge stock-badge-success">
+
+                                            @item.CurrentStock
+
+                                        </span>
+                                    }
+                                    else if (item.CurrentStock > 0)
+                                    {
+                                        <span class="badge stock-badge stock-badge-warning">
+
+                                            @item.CurrentStock
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge stock-badge stock-badge-danger">
+
+                                            Tükendi
+
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- İŞLEMLER -->
+
+                                <td class="text-end">
+
+                                    <div class="btn-group btn-group-sm rounded-2 overflow-hidden shadow-sm">
+
+
+                                        <!-- DETAY -->
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-info text-white border-0"
+                                           title="Detay">
+
+                                            <i class="bi bi-eye-fill"></i>
+
+                                        </a>
+
+
+                                        <!-- DÜZENLE -->
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-warning text-white border-0"
+                                           title="Düzenle">
+
+                                            <i class="bi bi-pencil-fill"></i>
+
+                                        </a>
+
+
+                                        <!-- SİL -->
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-danger border-0"
+                                           title="Sil">
+
+                                            <i class="bi bi-trash-fill"></i>
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

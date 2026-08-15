@@ -1,0 +1,193 @@
+@model PharmacyStock.DTO.DashboardDTO.DashboardDto
+
+@{
+    int fillPercentage = Model.TotalStockIn > 0
+        ? (int)Math.Min(
+            100,
+            ((double)Model.TotalStock / Model.TotalStockIn) * 100
+        )
+        : 0;
+}
+
+<div class="card shadow-lg border-0 rounded-4 h-100 w-100 dashboard-warehouse-card">
+
+    <!-- BAŞLIK -->
+    <div class="card-header border-0 bg-transparent d-flex justify-content-between align-items-center py-3">
+
+        <h5 class="mb-0 fw-bold dashboard-chart-title">
+
+            <i class="bi bi-box-seam me-2"></i>
+
+            Depo Özeti
+
+        </h5>
+
+        <i class="bi bi-graph-up-arrow fs-4 dashboard-chart-title"></i>
+
+    </div>
+
+
+    <div class="card-body p-4">
+
+        <div class="row g-3 mb-4">
+
+            <!-- TOPLAM GİRİŞ -->
+            <div class="col-6">
+
+                <div class="rounded-4 p-3 h-100"
+                     style="background:rgba(34,197,94,.12);">
+
+                    <small class="text-success fw-semibold">
+
+                        <i class="bi bi-box-arrow-in-down me-1"></i>
+
+                        Toplam Giriş
+
+                    </small>
+
+                    <h2 class="fw-bold mt-2 mb-0 text-success">
+                        @Model.TotalStockIn
+                    </h2>
+
+                    <small class="warehouse-subtext">
+                        Ürün
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOPLAM ÇIKIŞ -->
+            <div class="col-6">
+
+                <div class="rounded-4 p-3 h-100"
+                     style="background:rgba(239,68,68,.12);">
+
+                    <small class="text-danger fw-semibold">
+
+                        <i class="bi bi-box-arrow-up me-1"></i>
+
+                        Toplam Çıkış
+
+                    </small>
+
+                    <h2 class="fw-bold mt-2 mb-0 text-danger">
+                        @Model.TotalStockOut
+                    </h2>
+
+                    <small class="warehouse-subtext">
+                        Ürün
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- NET STOK -->
+            <div class="col-6">
+
+                <div class="rounded-4 p-3 h-100"
+                     style="background:rgba(37,99,235,.12);">
+
+                    <small class="text-primary fw-semibold">
+
+                        <i class="bi bi-box-seam me-1"></i>
+
+                        Net Stok
+
+                    </small>
+
+                    <h2 class="fw-bold mt-2 mb-0 text-primary">
+                        @Model.TotalStock
+                    </h2>
+
+                    <small class="warehouse-subtext">
+                        Depodaki Ürün
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- DOLULUK -->
+            <div class="col-6">
+
+                <div class="rounded-4 p-3 h-100"
+                     style="background:rgba(245,158,11,.12);">
+
+                    <small class="text-warning fw-semibold">
+
+                        <i class="bi bi-pie-chart me-1"></i>
+
+                        Doluluk
+
+                    </small>
+
+                    <h2 class="fw-bold mt-2 mb-0 text-warning">
+                        @fillPercentage%
+                    </h2>
+
+                    <small class="warehouse-subtext">
+                        Kullanım
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- DOLULUK BAR -->
+        <div class="mb-2 d-flex justify-content-between warehouse-label-text">
+
+            <span class="fw-semibold">
+                Depo Doluluk Oranı
+            </span>
+
+            <span class="fw-bold">
+                @fillPercentage%
+            </span>
+
+        </div>
+
+
+        <div class="progress rounded-pill"
+             style="height:14px;">
+
+            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                 role="progressbar"
+                 style="width:@fillPercentage%; background:linear-gradient(90deg,#22c55e,#3b82f6);"
+                 aria-valuenow="@fillPercentage"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+            </div>
+
+        </div>
+
+
+        <!-- GİRİŞ / ÇIKIŞ FARKI -->
+        <div class="row mt-4 text-center">
+
+            <div class="col">
+
+                <small class="warehouse-subtext fw-semibold">
+                    Giriş / Çıkış Farkı
+                </small>
+
+                <h4 class="fw-bold text-info mt-1">
+
+                    @(Model.TotalStockIn - Model.TotalStockOut)
+
+                </h4>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

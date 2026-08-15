@@ -1,0 +1,98 @@
+@model PharmacyStock.DTO.CategoryDTO.CategoryListDto
+
+@{
+    ViewData["Title"] = "Kategori Detayı";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-info text-white">
+            <h3 class="mb-0">
+                🏷️ Kategori Detayı
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <!-- KATEGORİ ADI -->
+            <div class="row mb-3">
+
+                <div class="col-md-4 fw-bold">
+                    Kategori Adı
+                </div>
+
+                <div class="col-md-8">
+                    @Model.Name
+                </div>
+
+            </div>
+
+
+            <!-- AÇIKLAMA -->
+            <div class="row mb-3">
+
+                <div class="col-md-4 fw-bold">
+                    Açıklama
+                </div>
+
+                <div class="col-md-8">
+
+                    @(string.IsNullOrWhiteSpace(Model.Description)
+                        ? "Açıklama bulunmuyor."
+                        : Model.Description)
+
+                </div>
+
+            </div>
+
+
+            <!-- ÜRÜN SAYISI -->
+            <div class="row mb-4">
+
+                <div class="col-md-4 fw-bold">
+                    Ürün Sayısı
+                </div>
+
+                <div class="col-md-8">
+
+                    <span class="badge bg-primary fs-6">
+                        @Model.ProductCount
+                    </span>
+
+                </div>
+
+            </div>
+
+            <hr />
+
+
+            <!-- BUTONLAR -->
+            <div class="d-flex gap-2">
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-warning">
+
+                    <i class="bi bi-pencil me-1"></i>
+                    Düzenle
+
+                </a>
+
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+
+                    <i class="bi bi-arrow-left me-1"></i>
+                    Geri Dön
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

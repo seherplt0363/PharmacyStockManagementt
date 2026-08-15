@@ -1,0 +1,236 @@
+@model PharmacyStock.DTO.StockTransactionDTO.StockTransactionUpdateDto
+
+@using PharmacyStock.Entities.Enum
+
+@{
+    ViewData["Title"] = "Stok Hareketini Düzenle";
+}
+
+<div class="container-fluid mt-4">
+
+    <div class="card shadow border-0 max-width-800 mx-auto border-warning">
+
+        <div class="card-header bg-warning text-white">
+
+            <h3 class="mb-0">
+                <i class="bi bi-pencil-fill"></i>
+                Stok Hareketini Düzenle
+            </h3>
+
+        </div>
+
+        <div class="card-body p-4">
+
+            <div class="alert alert-info">
+
+                <h5 class="alert-heading fw-bold">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    Bilgi
+                </h5>
+
+                <p class="mb-0">
+                    Bu hareketi düzenlediğinizde eski hareketin stok üzerindeki
+                    etkisi geri alınacak ve yeni işlem bilgileri stoğa yeniden
+                    uygulanacaktır.
+                </p>
+
+            </div>
+
+
+            <form asp-action="Edit"
+                  asp-route-id="@Model.Id"
+                  method="post">
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+
+                <!-- ÜRÜN + İŞLEM TÜRÜ -->
+                <div class="row mb-3">
+
+                    <div class="col-md-6">
+
+                        <label asp-for="ProductId"
+                               class="form-label fw-bold">
+                            Ürün
+                        </label>
+
+                        <select asp-for="ProductId"
+                                class="form-select"
+                                asp-items="ViewBag.Products">
+
+                            <option value="">
+                                -- Ürün Seçin --
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="ProductId"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label asp-for="Type"
+                               class="form-label fw-bold">
+                            İşlem Türü
+                        </label>
+
+                        <select asp-for="Type"
+                                class="form-select"
+                                asp-items="Html.GetEnumSelectList<TransactionType>()">
+                        </select>
+
+                        <span asp-validation-for="Type"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MİKTAR + TARİH -->
+                <div class="row mb-3">
+
+                    <div class="col-md-6">
+
+                        <label asp-for="Quantity"
+                               class="form-label fw-bold">
+                            Miktar
+                        </label>
+
+                        <input asp-for="Quantity"
+                               class="form-control"
+                               type="number"
+                               min="1" />
+
+                        <span asp-validation-for="Quantity"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label asp-for="TransactionDate"
+                               class="form-label fw-bold">
+                            İşlem Tarihi
+                        </label>
+
+                        <input asp-for="TransactionDate"
+                               class="form-control"
+                               type="datetime-local" />
+
+                        <span asp-validation-for="TransactionDate"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- İŞLEMİ YAPAN -->
+                <div class="mb-3">
+
+                    <label asp-for="PerformedBy"
+                           class="form-label fw-bold">
+                        İşlemi Yapan
+                    </label>
+
+                    <input asp-for="PerformedBy"
+                           class="form-control" />
+
+                    <span asp-validation-for="PerformedBy"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- SERİ NUMARALARI -->
+                <div class="mb-3">
+
+                    <label asp-for="SerialNumbers"
+                           class="form-label fw-bold">
+                        Seri Numaraları
+                    </label>
+
+                    <textarea asp-for="SerialNumbers"
+                              class="form-control"
+                              rows="3"></textarea>
+
+                    <span asp-validation-for="SerialNumbers"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- NOTLAR -->
+                <div class="mb-3">
+
+                    <label asp-for="Notes"
+                           class="form-label fw-bold">
+                        Notlar / Açıklama
+                    </label>
+
+                    <textarea asp-for="Notes"
+                              class="form-control"
+                              rows="2"></textarea>
+
+                    <span asp-validation-for="Notes"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <hr class="my-4" />
+
+
+                <!-- BUTONLAR -->
+                <div class="d-flex justify-content-between">
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-arrow-left"></i>
+
+                        Vazgeç
+
+                    </a>
+
+
+                    <button type="submit"
+                            class="btn btn-warning text-white px-4">
+
+                        <i class="bi bi-check-lg"></i>
+
+                        Değişiklikleri Kaydet
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

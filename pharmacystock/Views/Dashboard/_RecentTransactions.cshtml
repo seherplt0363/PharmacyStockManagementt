@@ -1,0 +1,99 @@
+﻿@model PharmacyStock.DTO.DashboardDTO.DashboardDto
+@using PharmacyStock.Entities.Enum
+
+<div class="card shadow-sm border border-translucent h-100">
+
+    <!-- BAŞLIK -->
+    <div class="card-header bg-transparent py-3 d-flex align-items-center">
+        <h5 class="mb-0 fw-semibold fs-6">
+            <i class="bi bi-clock-history me-2 text-primary"></i>
+            Son 5 Stok Hareketi
+        </h5>
+    </div>
+
+    <!-- TABLO -->
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0 recent-transactions-table">
+
+                <thead>
+                    <tr class="small text-uppercase"
+                        style="font-size: 0.75rem; letter-spacing: 0.5px;">
+
+                        <th class="ps-4 py-3">
+                            Ürün
+                        </th>
+
+                        <th class="py-3">
+                            İşlem
+                        </th>
+
+                        <th class="py-3 text-end">
+                            Miktar
+                        </th>
+
+                        <th class="pe-4 py-3 text-end">
+                            Tarih
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model.RecentTransactions.Take(5))
+                    {
+                        <tr>
+
+                            <!-- ÜRÜN -->
+                            <td class="ps-4 py-3 fw-medium transaction-product">
+                                @(string.IsNullOrWhiteSpace(item.ProductName)
+                                    ? "-"
+                                    : item.ProductName)
+                            </td>
+
+
+                            <!-- İŞLEM -->
+                            <td class="py-3">
+
+                                @if (item.Type == TransactionType.In)
+                                {
+                                    <span class="badge transaction-in rounded-pill px-2 py-1 fw-semibold">
+                                        Giriş
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge transaction-out rounded-pill px-2 py-1 fw-semibold">
+                                        Çıkış
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- MİKTAR -->
+                            <td class="py-3 text-end fw-semibold transaction-quantity">
+                                @item.Quantity
+                            </td>
+
+
+                            <!-- TARİH -->
+                            <td class="pe-4 py-3 text-end small transaction-date">
+                                @item.TransactionDate.ToString("dd.MM.yyyy")
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

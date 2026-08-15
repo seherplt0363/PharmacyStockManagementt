@@ -1,0 +1,396 @@
+@model IEnumerable<PharmacyStock.DTO.CategoryDTO.CategoryListDto>
+
+@{
+    ViewData["Title"] = "Kategori Yönetimi";
+}
+
+<div class="container-fluid py-3">
+
+    <!-- ANA KART -->
+    <div class="card page-card shadow-sm border-0 rounded-3">
+        <div class="card-body p-4">
+
+            <!-- ÜST BAŞLIK VE YENİ EKLE BUTONU -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+                <div class="d-flex align-items-center gap-2">
+
+                    <span class="fs-4 text-warning">🏷️</span>
+
+                    <h3 class="fw-bold mb-0 page-title-text">
+                        Kategori Yönetimi
+                    </h3>
+
+                    <span class="badge rounded-pill bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 ms-2">
+                        @Model.Count() Kategori
+                    </span>
+
+                </div>
+
+                <a asp-action="Create"
+                   class="btn btn-primary d-inline-flex align-items-center gap-2 rounded-2 px-3 shadow-sm">
+
+                    <i class="bi bi-plus-lg"></i>
+
+                    Yeni Kategori
+
+                </a>
+
+            </div>
+
+
+            <!-- ARAMA FORMU -->
+            <form asp-action="Index"
+                  method="get"
+                  class="mb-4">
+
+                <div class="row g-2">
+
+                    <div class="col-12 col-md-5 col-lg-4">
+
+                        <div class="input-group">
+
+                            <span class="input-group-text search-icon-bg border-end-0">
+
+                                <i class="bi bi-search text-muted"></i>
+
+                            </span>
+
+                            <input type="text"
+                                   name="searchString"
+                                   value="@ViewData["CurrentFilter"]"
+                                   class="form-control form-control-custom border-start-0 ps-0"
+                                   placeholder="Kategori ara..."
+                                   autocomplete="off" />
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-auto">
+
+                        <button type="submit"
+                                class="btn btn-outline-primary px-4 rounded-2 h-100">
+
+                            Ara
+
+                        </button>
+
+                    </div>
+
+
+                    @if (!string.IsNullOrWhiteSpace(
+                        ViewData["CurrentFilter"] as string))
+                    {
+                        <div class="col-auto">
+
+                            <a asp-action="Index"
+                               class="btn btn-outline-secondary px-3 rounded-2 h-100 d-inline-flex align-items-center"
+                               title="Filtreyi Temizle">
+
+                                <i class="bi bi-x-lg"></i>
+
+                            </a>
+
+                        </div>
+                    }
+
+                </div>
+
+            </form>
+
+
+            <!-- TABLO VEYA UYARI -->
+            @if (!Model.Any())
+            {
+                <div class="alert alert-custom-info d-flex align-items-center gap-2 rounded-3 p-3 mt-3"
+                     role="alert">
+
+                    <i class="bi bi-info-circle fs-5"></i>
+
+                    <div>
+                        Henüz kayıtlı kategori bulunmamaktadır.
+                    </div>
+
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive rounded-3 border-custom">
+
+                    <table class="table table-custom align-middle mb-0">
+
+                        <thead>
+
+                            <tr>
+
+                                <th scope="col"
+                                    style="width:80px;">
+                                    ID
+                                </th>
+
+                                <th scope="col">
+                                    KATEGORİ
+                                </th>
+
+                                <th scope="col">
+                                    AÇIKLAMA
+                                </th>
+
+                                <th scope="col"
+                                    class="text-center">
+                                    ÜRÜN SAYISI
+                                </th>
+
+
+
+                                <th scope="col"
+                                    class="text-end"
+                                    style="width:160px;">
+                                    İŞLEMLER
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <td class="fw-semibold text-muted">
+
+                                        #@item.Id
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="fw-bold category-name">
+
+                                            @item.Name
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <td class="text-secondary-custom">
+
+                                        @(string.IsNullOrWhiteSpace(item.Description)
+                                            ? "-"
+                                            : item.Description)
+
+                                    </td>
+
+
+                                    <td class="text-center">
+
+                                        <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2">
+
+                                            @item.ProductCount
+
+                                        </span>
+
+                                    </td>
+
+
+
+
+
+                                    <td class="text-end">
+
+                                        <div class="btn-group btn-group-sm">
+
+                                            <a asp-action="Details"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-info btn-action-badge text-white"
+                                               title="Detay">
+
+                                                <i class="bi bi-eye"></i>
+
+                                            </a>
+
+
+                                            <a asp-action="Edit"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-warning btn-action-badge text-white"
+                                               title="Düzenle">
+
+                                                <i class="bi bi-pencil"></i>
+
+                                            </a>
+
+
+                                            <a asp-action="Delete"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-danger btn-action-badge text-white"
+                                               title="Sil">
+
+                                                <i class="bi bi-trash"></i>
+
+                                            </a>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>
+
+
+<style>
+    /* ============================================================
+           LIGHT MODE
+           ============================================================ */
+
+    .page-card {
+        background-color: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .page-title-text,
+    .category-name {
+        color: #1a202c !important;
+    }
+
+    .text-secondary-custom {
+        color: #64748b;
+    }
+
+    .border-custom {
+        border: 1px solid #e2e8f0;
+    }
+
+    .search-icon-bg {
+        background-color: #ffffff;
+        border: 1px solid #cbd5e1;
+    }
+
+    .form-control-custom {
+        background-color: #ffffff;
+        border: 1px solid #cbd5e1;
+        color: #1e293b;
+    }
+
+        .form-control-custom:focus {
+            background-color: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: none;
+            color: #0f172a;
+        }
+
+    .table-custom {
+        color: #334155;
+    }
+
+        .table-custom thead {
+            background-color: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .table-custom tbody tr {
+            border-bottom: 1px solid #f1f5f9;
+            transition: background-color 0.2s ease;
+        }
+
+            .table-custom tbody tr:hover {
+                background-color: #f8fafc;
+            }
+
+    .btn-action-badge {
+        padding: 0.25rem 0.5rem;
+        margin: 0 1px;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .alert-custom-info {
+        background-color: #eff6ff;
+        color: #1e40af;
+        border: 1px solid #bfdbfe;
+    }
+
+
+    /* ============================================================
+           DARK MODE
+           ============================================================ */
+
+    body.dark-mode .page-card {
+        background-color: #1e1e2d !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+
+    body.dark-mode .page-title-text,
+    body.dark-mode .category-name {
+        color: #ffffff !important;
+    }
+
+    body.dark-mode .text-secondary-custom {
+        color: #94a3b8;
+    }
+
+    body.dark-mode .border-custom {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    body.dark-mode .search-icon-bg {
+        background-color: #151521 !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    body.dark-mode .form-control-custom {
+        background-color: #151521 !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: #f8fafc !important;
+    }
+
+        body.dark-mode .form-control-custom::placeholder {
+            color: #64748b !important;
+        }
+
+    body.dark-mode .table-custom {
+        color: #e2e8f0;
+    }
+
+        body.dark-mode .table-custom thead {
+            background-color: #151521;
+            color: #94a3b8;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        body.dark-mode .table-custom tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+            body.dark-mode .table-custom tbody tr:hover {
+                background-color: rgba(255, 255, 255, 0.02);
+            }
+
+    body.dark-mode .alert-custom-info {
+        background-color: #172554;
+        color: #93c5fd;
+        border: 1px solid #1e40af;
+    }
+</style>

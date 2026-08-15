@@ -1,3 +1,7 @@
 <Solution>
+  <Project Path="PharmacyStock.Business/PharmacyStock.Business.csproj" Id="5267af1b-c997-46ae-8049-d7f56376a845" />
+  <Project Path="PharmacyStock.DataAccess/PharmacyStock.DataAccess.csproj" Id="c7a9bd3b-f883-45f2-967f-a2b77a09dd25" />
+  <Project Path="PharmacyStock.DTO/PharmacyStock.DTO.csproj" />
+  <Project Path="PharmacyStock.Entities/PharmacyStock.Entities.csproj" Id="a78384da-6f87-49d9-be2a-5b9b0a8fce70" />
   <Project Path="pharmacystock/pharmacystock.csproj" />
 </Solution>

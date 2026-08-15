@@ -1,0 +1,345 @@
+@model IEnumerable<PharmacyStock.DTO.StockTransactionDTO.StockTransactionListDto>
+
+@using PharmacyStock.Entities.Enum
+
+@{
+    var isRecent = ViewData["IsRecent"] as bool? ?? false;
+
+    ViewData["Title"] =
+        isRecent
+            ? "Son Stok Hareketleri"
+            : "Tüm Stok Hareketleri";
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/stock-transaction.css"
+          asp-append-version="true" />
+}
+
+<div class="container-fluid py-4">
+
+    <!-- BAŞARI / HATA BİLDİRİMLERİ -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 mb-4"
+             role="alert">
+
+            <div class="d-flex align-items-center">
+
+                <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+
+                <div>
+                    @TempData["Success"]
+                </div>
+
+            </div>
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Kapat">
+            </button>
+
+        </div>
+    }
+
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 mb-4"
+             role="alert">
+
+            <div class="d-flex align-items-center">
+
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+
+                <div>
+                    @TempData["Error"]
+                </div>
+
+            </div>
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Kapat">
+            </button>
+
+        </div>
+    }
+
+
+    <!-- ANA KART -->
+
+    <div class="card transaction-table-card shadow-sm border-0 rounded-3">
+
+        <div class="card-body p-4">
+
+
+            <!-- BAŞLIK VE BUTONLAR -->
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+
+                <div class="d-flex align-items-center gap-2">
+
+                    <i class="bi bi-box-seam fs-3 text-primary"></i>
+
+                    <h3 class="fw-bold mb-0">
+
+                        @(isRecent
+                            ? "Son 50 Stok Hareketi"
+                            : "Stok Hareket Kayıtları")
+
+                    </h3>
+
+                </div>
+
+
+                <div class="d-flex flex-wrap gap-2">
+
+                    @if (isRecent)
+                    {
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 shadow-sm">
+
+                            <i class="bi bi-list-ul"></i>
+
+                            <span>Tümünü Göster</span>
+
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-action="Recent"
+                           class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 shadow-sm">
+
+                            <i class="bi bi-clock-history"></i>
+
+                            <span>Son Hareketler</span>
+
+                        </a>
+                    }
+
+
+                    <a asp-action="Create"
+                       class="btn btn-success d-inline-flex align-items-center gap-2 shadow-sm">
+
+                        <i class="bi bi-plus-circle"></i>
+
+                        <span>Yeni Stok Hareketi</span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- TABLO -->
+            @if (!Model.Any())
+            {
+                <div class="text-center text-muted py-5">
+
+                    <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary"></i>
+
+                    Henüz kayıtlı bir stok hareketi bulunmuyor.
+
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0 transaction-table">
+
+                        <thead>
+
+                            <tr class="text-uppercase text-muted small fw-bold">
+
+                                <th>Tarih</th>
+
+                                <th>Ürün</th>
+
+                                <th class="text-center">
+                                    İşlem Türü
+                                </th>
+
+                                <th class="text-center">
+                                    Miktar
+                                </th>
+
+                                <th class="text-center">
+                                    İşlemi Yapan
+                                </th>
+
+                                <th>Notlar</th>
+
+                                <th class="text-center">
+                                    İşlemler
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <!-- TARİH -->
+
+                                    <td class="text-nowrap text-muted fw-medium">
+
+                                        @item.TransactionDate.ToString(
+                                            "dd.MM.yyyy HH:mm"
+                                        )
+
+                                    </td>
+
+
+                                    <!-- ÜRÜN -->
+
+                                    <td>
+
+                                        <div class="fw-bold transaction-product-name">
+
+                                            @item.ProductName
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- İŞLEM TÜRÜ -->
+
+                                    <td class="text-center">
+
+                                        @if (item.Type == TransactionType.In)
+                                        {
+                                            <span class="badge rounded-pill bg-success px-3 py-2 fw-semibold d-inline-flex align-items-center gap-1">
+
+                                                <i class="bi bi-arrow-down-circle-fill"></i>
+
+                                                Giriş
+
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge rounded-pill bg-danger px-3 py-2 fw-semibold d-inline-flex align-items-center gap-1">
+
+                                                <i class="bi bi-arrow-up-circle-fill"></i>
+
+                                                Çıkış
+
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- MİKTAR -->
+
+                                    <td class="text-center fw-bold">
+
+                                        @item.Quantity
+
+                                        <span class="fw-normal text-muted small">
+                                            Adet
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- İŞLEMİ YAPAN -->
+
+                                    <td class="text-center text-muted">
+
+                                        @(string.IsNullOrWhiteSpace(item.PerformedBy)
+                                            ? "-"
+                                            : item.PerformedBy)
+
+                                    </td>
+
+
+                                    <!-- NOTLAR -->
+
+                                    <td>
+
+                                        <span class="text-truncate d-inline-block text-muted transaction-note"
+                                              title="@item.Notes">
+
+                                            @(string.IsNullOrWhiteSpace(item.Notes)
+                                                ? "-"
+                                                : item.Notes)
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- İŞLEMLER -->
+
+                                    <td class="text-center">
+
+                                        <div class="btn-group btn-group-sm"
+                                             role="group">
+
+                                            <!-- DETAY -->
+
+                                            <a asp-action="Details"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-info text-white"
+                                               title="Detay">
+
+                                                <i class="bi bi-eye"></i>
+
+                                            </a>
+
+
+                                            <!-- DÜZENLE -->
+
+                                            <a asp-action="Edit"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-warning text-white"
+                                               title="Düzenle">
+
+                                                <i class="bi bi-pencil"></i>
+
+                                            </a>
+
+
+                                            <!-- SİL -->
+
+                                            <a asp-action="Delete"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-danger"
+                                               title="Sil">
+
+                                                <i class="bi bi-trash"></i>
+
+                                            </a>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>

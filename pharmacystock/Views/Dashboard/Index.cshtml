@@ -1,0 +1,90 @@
+@model PharmacyStock.DTO.DashboardDTO.DashboardDto
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- 1. SİSTEM UYARILARI -->
+    <div class="mb-3">
+        <partial name="_SystemWarnings" model="Model" />
+    </div>
+
+    <!-- 2. HIZLI İŞLEMLER -->
+    <div class="mb-3">
+        <partial name="_QuickActions" model="Model" />
+    </div>
+
+    <!-- 3. İSTATİSTİK KARTLARI -->
+    <div class="mb-3">
+        <partial name="_StatisticCards" model="Model" />
+    </div>
+
+    <!-- 4. GRAFİKLER -->
+    <div class="mb-3">
+        <partial name="_Charts" model="Model" />
+    </div>
+
+    <!-- 5. SON EKLENEN ÜRÜNLER VE DEPO ÖZETİ -->
+    <div class="row g-3 mb-3">
+
+        <div class="col-12 col-lg-6">
+            <partial name="_NewProducts" model="Model" />
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <partial name="_WarehouseSummary" model="Model" />
+        </div>
+
+    </div>
+
+    <!-- 6. SON 5 STOK HAREKETİ -->
+    <div class="mb-3">
+        <partial name="_RecentTransactions" model="Model" />
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        window.dashboardData = {
+            last7Days: @Html.Raw(
+                                            System.Text.Json.JsonSerializer.Serialize(
+                                                    Model?.Last7Days ?? new List<string>()
+                            )
+                            ),
+
+            stockIn: @Html.Raw(
+                                            System.Text.Json.JsonSerializer.Serialize(
+                                                    Model?.StockInData ?? new List<int>()
+                            )
+                            ),
+
+            stockOut: @Html.Raw(
+                                            System.Text.Json.JsonSerializer.Serialize(
+                                                    Model?.StockOutData ?? new List<int>()
+                            )
+                            ),
+
+            topProductNames: @Html.Raw(
+                                            System.Text.Json.JsonSerializer.Serialize(
+                                                    Model?.TopProductNames ?? new List<string>()
+                            )
+                            ),
+
+            topProductCounts: @Html.Raw(
+                                            System.Text.Json.JsonSerializer.Serialize(
+                                                    Model?.TopProductTransactionCounts ?? new List<int>()
+                            )
+                            )
+                };
+    </script>
+
+    <script src="~/js/dashboard.js"
+            asp-append-version="true">
+    </script>
+}

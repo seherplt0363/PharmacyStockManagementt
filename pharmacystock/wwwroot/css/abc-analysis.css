@@ -1,0 +1,78 @@
+﻿/* =======================================================
+   ABC ANALYSIS
+======================================================= */
+
+.abc-card-description {
+    font-size: 11px;
+    line-height: 1.2;
+}
+
+.abc-chart-wrapper {
+    position: relative;
+    height: 220px;
+}
+
+.abc-search {
+    max-width: 300px;
+}
+
+.abc-progress {
+    height: 6px;
+}
+
+
+/* =======================================================
+   LIGHT MODE
+======================================================= */
+
+body:not(.dark-mode) .abc-search .form-control,
+body:not(.dark-mode) .abc-search .input-group-text {
+    background-color: #ffffff;
+    border-color: #dee2e6;
+    color: #212529;
+}
+
+body:not(.dark-mode) #abcTable thead th {
+    background-color: #f8f9fa;
+    color: #495057;
+}
+
+body:not(.dark-mode) #abcTable tbody td {
+    color: #212529;
+}
+
+
+/* =======================================================
+   DARK MODE
+======================================================= */
+
+body.dark-mode .abc-search .form-control,
+body.dark-mode .abc-search .input-group-text {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+    color: #e2e8f0 !important;
+}
+
+    body.dark-mode .abc-search .form-control::placeholder {
+        color: #64748b;
+    }
+
+body.dark-mode #abcTable {
+    color: #e2e8f0;
+}
+
+    body.dark-mode #abcTable thead th {
+        background-color: #0f172a !important;
+        color: #94a3b8 !important;
+        border-color: #334155 !important;
+    }
+
+    body.dark-mode #abcTable tbody td {
+        color: #e2e8f0 !important;
+        border-color: #334155 !important;
+    }
+
+    body.dark-mode #abcTable tbody tr:hover > * {
+        background-color: #273449 !important;
+        color: #ffffff !important;
+    }

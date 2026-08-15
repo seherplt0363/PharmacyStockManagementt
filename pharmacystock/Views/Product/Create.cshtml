@@ -1,0 +1,388 @@
+@model PharmacyStock.DTO.ProductDTO.ProductCreateDto
+
+@{
+    ViewData["Title"] = "Yeni Ürün";
+}
+
+<div class="container-fluid py-3">
+
+    <div class="card form-card shadow-sm border-0 rounded-3 max-width-1000 mx-auto">
+
+        <div class="card-body p-4">
+
+            <!-- BAŞLIK -->
+            <div class="d-flex align-items-center gap-2 mb-4">
+                <span class="fs-4">📦</span>
+
+                <h3 class="fw-bold mb-0 form-title-text">
+                    Yeni Ürün Ekle
+                </h3>
+            </div>
+
+
+            <!-- FORM -->
+            <form asp-action="Create"
+                  method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+
+                <div class="row g-3">
+
+                    <!-- =====================================================
+                         SOL SÜTUN
+                    ====================================================== -->
+
+                    <div class="col-md-6">
+
+                        <!-- ÜRÜN ADI -->
+                        <div class="mb-3">
+
+                            <label asp-for="Name"
+                                   class="form-label fw-semibold">
+                                Ürün Adı
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input asp-for="Name"
+                                   class="form-control custom-input"
+                                   placeholder="Örn: Parol 500 mg" />
+
+                            <span asp-validation-for="Name"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+
+                        <!-- BARKOD -->
+                        <div class="mb-3">
+
+                            <label asp-for="Barcode"
+                                   class="form-label fw-semibold">
+
+                                <i class="bi bi-upc-scan me-1"></i>
+
+                                Barkod
+
+                            </label>
+
+                            <input asp-for="Barcode"
+                                   class="form-control custom-input"
+                                   placeholder="8699546000000"
+                                   maxlength="13" />
+
+                            <span asp-validation-for="Barcode"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+
+                        <!-- KATEGORİ -->
+                        <div class="mb-3">
+
+                            <label asp-for="CategoryId"
+                                   class="form-label fw-semibold">
+
+                                Kategori
+
+                            </label>
+
+                            <select asp-for="CategoryId"
+                                    asp-items="ViewBag.Categories"
+                                    class="form-select custom-input">
+
+                                <option value="">
+                                    Kategori Seçiniz
+                                </option>
+
+                            </select>
+
+                            <span asp-validation-for="CategoryId"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+
+                        <!-- MİNİMUM STOK -->
+                        <div class="mb-3">
+
+                            <label asp-for="MinimumStock"
+                                   class="form-label fw-semibold">
+
+                                <i class="bi bi-exclamation-triangle me-1"></i>
+
+                                Minimum Stok
+
+                            </label>
+
+                            <input asp-for="MinimumStock"
+                                   type="number"
+                                   min="0"
+                                   class="form-control custom-input"
+                                   placeholder="10" />
+
+                            <span asp-validation-for="MinimumStock"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================================
+                         SAĞ SÜTUN
+                    ====================================================== -->
+
+                    <div class="col-md-6">
+
+                        <!-- MARKA -->
+                        <div class="mb-3">
+
+                            <label asp-for="BrandId"
+                                   class="form-label fw-semibold">
+
+                                Marka
+
+                            </label>
+
+                            <select asp-for="BrandId"
+                                    asp-items="ViewBag.Brands"
+                                    class="form-select custom-input">
+
+                                <option value="">
+                                    Marka Seçiniz
+                                </option>
+
+                            </select>
+
+                            <span asp-validation-for="BrandId"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+
+                        <!-- SATIŞ FİYATI -->
+                        <div class="mb-3">
+
+                            <label asp-for="Price"
+                                   class="form-label fw-semibold">
+
+                                <i class="bi bi-cash-stack me-1"></i>
+
+                                Satış Fiyatı
+
+                            </label>
+
+                            <input asp-for="Price"
+                                   type="number"
+                                   step="0.01"
+                                   min="0.01"
+                                   class="form-control custom-input"
+                                   placeholder="0,00" />
+
+                            <span asp-validation-for="Price"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+
+
+
+
+                        <!-- SON KULLANMA TARİHİ -->
+                        <div class="mb-3">
+
+                            <label asp-for="ExpirationDate"
+                                   class="form-label fw-semibold">
+
+                                <i class="bi bi-calendar-event me-1"></i>
+
+                                Son Kullanma Tarihi
+
+                            </label>
+
+                            <input asp-for="ExpirationDate"
+                                   type="date"
+                                   class="form-control custom-input" />
+
+                            <span asp-validation-for="ExpirationDate"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================================
+                         AÇIKLAMA
+                    ====================================================== -->
+
+                    <div class="col-12">
+
+                        <div class="mb-3">
+
+                            <label asp-for="Description"
+                                   class="form-label fw-semibold">
+
+                                Açıklama
+
+                            </label>
+
+                            <textarea asp-for="Description"
+                                      rows="4"
+                                      class="form-control custom-input"
+                                      placeholder="Ürün hakkında kısa açıklama...">
+                            </textarea>
+
+                            <span asp-validation-for="Description"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =====================================================
+                     BUTONLAR
+                ====================================================== -->
+
+                <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top custom-border">
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary d-inline-flex align-items-center gap-1 shadow-sm px-4 rounded-3">
+
+                        <i class="bi bi-arrow-left"></i>
+
+                        Geri Dön
+
+                    </a>
+
+
+                    <button type="submit"
+                            class="btn btn-success d-inline-flex align-items-center gap-2 shadow-sm px-4 rounded-3 fw-semibold">
+
+                        <i class="bi bi-floppy"></i>
+
+                        Kaydet
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+    /* ============================================================
+           LIGHT MODE
+           ============================================================ */
+
+    .form-card {
+        background-color: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .form-title-text {
+        color: #1a202c !important;
+    }
+
+    .form-label {
+        color: #2d3748;
+    }
+
+    .custom-input {
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #1a202c;
+        border-radius: 8px;
+        padding: 0.55rem 0.8rem;
+    }
+
+        .custom-input:focus {
+            background-color: #ffffff;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            color: #1a202c;
+        }
+
+    .custom-border {
+        border-color: rgba(0, 0, 0, 0.08) !important;
+    }
+
+
+    /* ============================================================
+           DARK MODE
+           ============================================================ */
+
+    body.dark-mode .form-card {
+        background-color: #1e1e2d !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+
+    body.dark-mode .form-title-text {
+        color: #ffffff !important;
+    }
+
+    body.dark-mode .form-label {
+        color: #e2e8f0;
+    }
+
+    body.dark-mode .custom-input {
+        background-color: #151521;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+    }
+
+        body.dark-mode .custom-input:focus {
+            background-color: #1b1b28;
+            border-color: #6366f1;
+            color: #ffffff;
+        }
+
+    body.dark-mode .custom-border {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+
+    /* ============================================================
+           PLACEHOLDER
+           ============================================================ */
+
+    .custom-input::placeholder {
+        color: #a0aec0;
+        opacity: 0.8;
+    }
+
+    body.dark-mode .custom-input::placeholder {
+        color: #6c757d;
+    }
+
+</style>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

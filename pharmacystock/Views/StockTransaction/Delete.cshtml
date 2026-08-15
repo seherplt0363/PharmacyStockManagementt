@@ -1,0 +1,159 @@
+@model PharmacyStock.DTO.StockTransactionDTO.StockTransactionListDto
+
+@using PharmacyStock.Entities.Enum
+
+@{
+    ViewData["Title"] = "Stok Hareketi Silme Onayı";
+}
+
+<div class="container-fluid mt-4">
+
+    <div class="card shadow border-0 max-width-800 mx-auto border-danger">
+
+        <div class="card-header bg-danger text-white">
+
+            <h3 class="mb-0">
+                <i class="bi bi-exclamation-octagon-fill"></i>
+                Stok Hareketi Silme Onayı
+            </h3>
+
+        </div>
+
+        <div class="card-body p-4">
+
+            <div class="alert alert-warning">
+
+                <h5 class="alert-heading fw-bold">
+
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Dikkat!
+
+                </h5>
+
+                <p class="mb-0">
+
+                    Bu stok hareketini sildiğinizde, işlemin ürün stoğu
+                    üzerindeki etkisi geri alınacaktır:
+
+                    <br />
+
+                    - <strong>Giriş</strong> silinirse:
+                    ürünün mevcut stoğu işlem miktarı kadar
+                    <strong>azaltılır.</strong>
+
+                    <br />
+
+                    - <strong>Çıkış</strong> silinirse:
+                    ürünün mevcut stoğu işlem miktarı kadar
+                    <strong>artırılır.</strong>
+
+                </p>
+
+            </div>
+
+
+            <div class="row my-4">
+
+                <div class="col-md-6 border-end">
+
+                    <p>
+                        <strong>Ürün:</strong>
+                        @(string.IsNullOrWhiteSpace(Model.ProductName)
+                            ? "-"
+                            : Model.ProductName)
+                    </p>
+
+                    <p>
+                        <strong>İşlem Tarihi:</strong>
+                        @Model.TransactionDate.ToString("dd.MM.yyyy HH:mm")
+                    </p>
+
+                    <p>
+                        <strong>Notlar:</strong>
+                        @(string.IsNullOrWhiteSpace(Model.Notes)
+                            ? "-"
+                            : Model.Notes)
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6 ps-md-4">
+
+                    <p>
+
+                        <strong>İşlem Türü:</strong>
+
+                        @if (Model.Type == TransactionType.In)
+                        {
+                            <span class="badge bg-success">
+                                Giriş
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">
+                                Çıkış
+                            </span>
+                        }
+
+                    </p>
+
+                    <p>
+                        <strong>Miktar:</strong>
+                        @Model.Quantity Adet
+                    </p>
+
+                    <p>
+                        <strong>İşlemi Yapan:</strong>
+                        @(string.IsNullOrWhiteSpace(Model.PerformedBy)
+                            ? "-"
+                            : Model.PerformedBy)
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <hr class="my-4" />
+
+
+            <form asp-action="Delete"
+                  asp-route-id="@Model.Id"
+                  method="post">
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+
+                <div class="d-flex justify-content-between">
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-arrow-left"></i>
+
+                        Vazgeç
+
+                    </a>
+
+
+                    <button type="submit"
+                            class="btn btn-danger px-4">
+
+                        <i class="bi bi-trash-fill"></i>
+
+                        Hareketi Sil ve Stoğu Güncelle
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

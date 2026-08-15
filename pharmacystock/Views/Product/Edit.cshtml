@@ -1,0 +1,276 @@
+﻿@model PharmacyStock.DTO.ProductDTO.ProductUpdateDto
+
+@{
+    ViewData["Title"] = "Ürün Düzenle";
+}
+
+<div class="card shadow-lg border-0">
+
+    <div class="card-header bg-warning text-dark">
+        <h3 class="mb-0">
+            ✏️ Ürün Düzenle
+        </h3>
+    </div>
+
+    <div class="card-body">
+
+        <form asp-action="Edit"
+              asp-route-id="@Model.Id"
+              method="post">
+
+            <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger">
+            </div>
+
+            <div class="row">
+
+                <!-- =====================================================
+                     SOL SÜTUN
+                ====================================================== -->
+
+                <div class="col-md-6">
+
+                    <!-- ÜRÜN ADI -->
+                    <div class="mb-3">
+
+                        <label asp-for="Name"
+                               class="form-label fw-semibold">
+                            Ürün Adı
+                        </label>
+
+                        <input asp-for="Name"
+                               class="form-control"
+                               placeholder="Ürün adı" />
+
+                        <span asp-validation-for="Name"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- BARKOD -->
+                    <div class="mb-3">
+
+                        <label asp-for="Barcode"
+                               class="form-label fw-semibold">
+                            Barkod
+                        </label>
+
+                        <input asp-for="Barcode"
+                               class="form-control"
+                               maxlength="13"
+                               placeholder="13 haneli barkod" />
+
+                        <span asp-validation-for="Barcode"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- KATEGORİ -->
+                    <div class="mb-3">
+
+                        <label asp-for="CategoryId"
+                               class="form-label fw-semibold">
+                            Kategori
+                        </label>
+
+                        <select asp-for="CategoryId"
+                                asp-items="ViewBag.Categories"
+                                class="form-select">
+
+                            <option value="">
+                                Kategori Seçiniz
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="CategoryId"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- MİNİMUM STOK -->
+                    <div class="mb-3">
+
+                        <label asp-for="MinimumStock"
+                               class="form-label fw-semibold">
+                            Minimum Stok
+                        </label>
+
+                        <input asp-for="MinimumStock"
+                               type="number"
+                               min="0"
+                               class="form-control" />
+
+                        <span asp-validation-for="MinimumStock"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =====================================================
+                     SAĞ SÜTUN
+                ====================================================== -->
+
+                <div class="col-md-6">
+
+                    <!-- MARKA -->
+                    <div class="mb-3">
+
+                        <label asp-for="BrandId"
+                               class="form-label fw-semibold">
+                            Marka
+                        </label>
+
+                        <select asp-for="BrandId"
+                                asp-items="ViewBag.Brands"
+                                class="form-select">
+
+                            <option value="">
+                                Marka Seçiniz
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="BrandId"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- SATIŞ FİYATI -->
+                    <div class="mb-3">
+
+                        <label asp-for="Price"
+                               class="form-label fw-semibold">
+                            Satış Fiyatı
+                        </label>
+
+                        <input asp-for="Price"
+                               type="number"
+                               step="0.01"
+                               min="0.01"
+                               class="form-control" />
+
+                        <span asp-validation-for="Price"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- SON KULLANMA TARİHİ -->
+                    <div class="mb-3">
+
+                        <label asp-for="ExpirationDate"
+                               class="form-label fw-semibold">
+                            Son Kullanma Tarihi
+                        </label>
+
+                        <input asp-for="ExpirationDate"
+                               type="date"
+                               class="form-control" />
+
+                        <span asp-validation-for="ExpirationDate"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- STOK BİLGİSİ -->
+                    <div class="alert alert-info mt-4">
+
+                        <i class="bi bi-info-circle me-1"></i>
+
+                        Mevcut stok miktarı bu ekrandan değiştirilmez.
+                        Stok giriş ve çıkışları
+                        <strong>Stok Hareketleri</strong>
+                        üzerinden yönetilir.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 AÇIKLAMA
+            ====================================================== -->
+
+            <div class="mb-3">
+
+                <label asp-for="Description"
+                       class="form-label fw-semibold">
+                    Açıklama
+                </label>
+
+                <textarea asp-for="Description"
+                          class="form-control"
+                          rows="4"
+                          placeholder="Ürün hakkında açıklama...">
+                </textarea>
+
+                <span asp-validation-for="Description"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <hr />
+
+
+            <!-- =====================================================
+                 BUTONLAR
+            ====================================================== -->
+
+            <div class="d-flex justify-content-end gap-2">
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+
+                    <i class="bi bi-arrow-left me-1"></i>
+
+                    Geri
+
+                </a>
+
+
+                <button type="submit"
+                        class="btn btn-warning">
+
+                    <i class="bi bi-floppy me-1"></i>
+
+                    Güncelle
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

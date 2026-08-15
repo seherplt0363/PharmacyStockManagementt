@@ -1,0 +1,224 @@
+﻿/* =======================================================
+   PRODUCT INDEX
+======================================================= */
+
+
+/* =======================================================
+   SAYFA YAPISI
+======================================================= */
+
+.product-card {
+    border-radius: 12px !important;
+}
+
+
+/* Tablo kolon genişlikleri */
+
+.product-id-column {
+    width: 70px;
+}
+
+.product-actions-column {
+    width: 140px;
+}
+
+
+/* =======================================================
+   BAŞLIK
+======================================================= */
+
+.product-title-text {
+    color: #1a202c;
+}
+
+
+/* =======================================================
+   YENİ ÜRÜN BUTONU
+======================================================= */
+
+.add-product-btn {
+    color: #2d3748;
+    border-color: #e2e8f0;
+    background-color: #ffffff;
+}
+
+    .add-product-btn:hover {
+        background-color: #f7fafc;
+        color: #1a202c;
+        border-color: #cbd5e0;
+    }
+
+
+/* =======================================================
+   ARAMA
+======================================================= */
+
+.product-search-input {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #1a202c;
+    border-radius: 8px;
+    padding: 0.55rem 0.8rem;
+}
+
+    .product-search-input:focus {
+        background-color: #ffffff;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+
+/* Arama butonu */
+
+.btn-search {
+    background-color: #5b46f6;
+    border: none;
+    border-radius: 8px;
+    padding: 0.55rem 1.25rem;
+    font-weight: 500;
+}
+
+    .btn-search:hover {
+        background-color: #4c38ed;
+    }
+
+
+/* =======================================================
+   TABLOYA ÖZEL STİLLER
+======================================================= */
+
+.custom-table thead th {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.custom-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+
+/* Ürün adı */
+
+.product-name {
+    color: #1a202c;
+}
+
+
+/* Barkod */
+
+.barcode-text {
+    font-family: Consolas, "Courier New", monospace;
+    color: #4a5568;
+}
+
+
+/* =======================================================
+   STOK ROZETLERİ
+======================================================= */
+
+.stock-badge {
+    display: inline-block;
+    min-width: 50px;
+    padding: 0.45em 0.9em;
+    border-radius: 50rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+
+/* Yeterli stok */
+
+.stock-badge-success {
+    background-color: #10b981 !important;
+    color: #ffffff !important;
+}
+
+
+/* Düşük stok */
+
+.stock-badge-warning {
+    background-color: #f59e0b !important;
+    color: #ffffff !important;
+}
+
+
+/* Tükendi */
+
+.stock-badge-danger {
+    background-color: #ef4444 !important;
+    color: #ffffff !important;
+}
+
+
+/* =======================================================
+   DARK MODE - SADECE PRODUCT SAYFASINA ÖZEL DURUMLAR
+======================================================= */
+
+body.dark-mode .product-title-text {
+    color: #f8fafc !important;
+}
+
+
+/* Yeni ürün butonu */
+
+body.dark-mode .add-product-btn {
+    color: #e2e8f0;
+    border-color: rgba(255, 255, 255, 0.15);
+    background-color: transparent;
+}
+
+    body.dark-mode .add-product-btn:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+    }
+
+
+/* Arama */
+
+body.dark-mode .product-search-input {
+    background-color: #151521;
+    border-color: rgba(255, 255, 255, 0.10);
+    color: #ffffff;
+}
+
+    body.dark-mode .product-search-input::placeholder {
+        color: #718096;
+    }
+
+    body.dark-mode .product-search-input:focus {
+        background-color: #1b1b28;
+        border-color: #6366f1;
+        color: #ffffff;
+    }
+
+
+/* Ürün */
+
+body.dark-mode .product-name {
+    color: #f8fafc !important;
+}
+
+
+/* Barkod */
+
+body.dark-mode .barcode-text {
+    color: #a0aec0;
+}
+
+
+/* =======================================================
+   RESPONSIVE
+======================================================= */
+
+@media (max-width: 768px) {
+
+    .product-actions-column {
+        min-width: 120px;
+    }
+
+    .barcode-text {
+        white-space: nowrap;
+    }
+}

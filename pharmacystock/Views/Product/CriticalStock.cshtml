@@ -1,0 +1,297 @@
+﻿@model IEnumerable<PharmacyStock.DTO.ProductDTO.ProductListDto>
+
+@{
+    ViewData["Title"] = "Kritik Stoktaki Ürünler";
+}
+
+<div class="container-fluid py-3">
+
+    <div class="card page-card shadow-sm border-0 rounded-3">
+        <div class="card-body p-4">
+
+            <!-- ÜST BAŞLIK VE BUTON -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+                <div class="d-flex align-items-center gap-2">
+
+                    <span class="fs-4 text-danger">⚠️</span>
+
+                    <h3 class="fw-bold mb-0 page-title-text">
+                        Kritik Stoktaki Ürünler
+                    </h3>
+
+                    <span class="badge rounded-pill bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 ms-2">
+                        @Model.Count() Ürün
+                    </span>
+
+                </div>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 rounded-3">
+
+                    <i class="bi bi-arrow-left"></i>
+
+                    Ürün Listesi
+
+                </a>
+
+            </div>
+
+
+            <!-- İÇERİK -->
+            @if (!Model.Any())
+            {
+                <div class="alert custom-alert-success d-flex align-items-center gap-2 p-3 rounded-3 mb-0">
+
+                    <i class="bi bi-check-circle-fill fs-5"></i>
+
+                    <div>
+                        Kritik stok seviyesinde veya altında herhangi bir ürün bulunmuyor.
+                    </div>
+
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-custom align-middle mb-0">
+
+                        <thead>
+                            <tr>
+                                <th>Ürün Adı</th>
+                                <th>Kategori</th>
+                                <th>Marka</th>
+                                <th class="text-center">Mevcut Stok</th>
+                                <th class="text-center">Minimum</th>
+                                <th>Stok Seviyesi</th>
+                                <th class="text-center">Durum</th>
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                double percent = 0;
+
+                                if (item.MinimumStock > 0)
+                                {
+                                    percent =
+                                        (double)item.CurrentStock /
+                                        item.MinimumStock * 100;
+                                }
+
+                                percent = Math.Min(percent, 100);
+
+
+                                <tr>
+
+                                    <!-- ÜRÜN -->
+                                    <td class="fw-semibold text-main">
+                                        @item.Name
+                                    </td>
+
+
+                                    <!-- KATEGORİ -->
+                                    <td>
+                                        @(string.IsNullOrWhiteSpace(item.CategoryName)
+                                            ? "-"
+                                            : item.CategoryName)
+                                    </td>
+
+
+                                    <!-- MARKA -->
+                                    <td>
+                                        @(string.IsNullOrWhiteSpace(item.BrandName)
+                                            ? "-"
+                                            : item.BrandName)
+                                    </td>
+
+
+                                    <!-- MEVCUT STOK -->
+                                    <td class="text-center">
+
+                                        <span class="badge bg-danger-subtle text-danger fw-bold px-3 py-2 rounded-2">
+
+                                            @item.CurrentStock
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- MİNİMUM -->
+                                    <td class="text-center fw-medium">
+
+                                        @item.MinimumStock
+
+                                    </td>
+
+
+                                    <!-- STOK SEVİYESİ -->
+                                    <td>
+
+                                        <div class="d-flex align-items-center gap-2">
+
+                                            <div class="progress flex-grow-1 custom-progress">
+
+                                                <div class="progress-bar bg-danger"
+                                                     role="progressbar"
+                                                     style="width: @percent%;"
+                                                     aria-valuenow="@percent"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="100">
+                                                </div>
+
+                                            </div>
+
+
+                                            <span class="small fw-bold text-danger min-w-45">
+
+                                                %@Math.Round(percent)
+
+                                            </span>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- DURUM -->
+                                    <td class="text-center">
+
+                                        @if (item.CurrentStock == 0)
+                                        {
+                                            <span class="badge bg-dark-subtle text-dark border border-secondary px-2 py-1 rounded-2">
+
+                                                Tükendi
+
+                                            </span>
+                                        }
+                                        else if (item.CurrentStock <= item.MinimumStock / 2)
+                                        {
+                                            <span class="badge bg-danger text-white px-2 py-1 rounded-2">
+
+                                                Çok Kritik
+
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark px-2 py-1 rounded-2">
+
+                                                Kritik
+
+                                            </span>
+                                        }
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>
+
+
+<style>
+
+    .min-w-45 {
+        min-width: 45px;
+    }
+
+    .custom-progress {
+        height: 8px;
+        background-color: rgba(0, 0, 0, 0.08);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+
+    /* ============================================================
+           LIGHT MODE
+           ============================================================ */
+
+    .page-card {
+        background-color: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .page-title-text,
+    .text-main {
+        color: #1a202c !important;
+    }
+
+    .table-custom {
+        color: #2d3748;
+    }
+
+        .table-custom thead th {
+            background-color: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 0.85rem 1rem;
+        }
+
+        .table-custom tbody td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+    .custom-alert-success {
+        background-color: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #166534;
+    }
+
+
+    /* ============================================================
+           DARK MODE
+           ============================================================ */
+
+    body.dark-mode .page-card {
+        background-color: #1e1e2d !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+
+    body.dark-mode .page-title-text,
+    body.dark-mode .text-main {
+        color: #ffffff !important;
+    }
+
+    body.dark-mode .table-custom {
+        color: #cbd5e1;
+    }
+
+        body.dark-mode .table-custom thead th {
+            background-color: #151521;
+            color: #94a3b8;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+        }
+
+        body.dark-mode .table-custom tbody td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+    body.dark-mode .custom-progress {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode .custom-alert-success {
+        background-color: rgba(22, 101, 52, 0.2);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        color: #4ade80;
+    }
+</style>

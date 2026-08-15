@@ -1,0 +1,292 @@
+﻿/* =======================================================
+   STOCK TURNOVER ANALYSIS
+======================================================= */
+
+
+/* =======================================================
+   ÖZET KARTLARI - ORTAK
+   Light / Dark modda renkler AYNI kalır.
+======================================================= */
+
+.turnover-card {
+    border-radius: 12px !important;
+    border: none !important;
+    min-height: 125px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .turnover-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+    }
+
+
+    /* Kart içindeki bütün yazılar beyaz */
+
+    .turnover-card,
+    .turnover-card * {
+        color: #ffffff !important;
+    }
+
+
+/* =======================================================
+   KART İÇERİKLERİ
+======================================================= */
+
+.turnover-card-icon {
+    display: inline-block;
+    margin-bottom: 0.15rem;
+    font-size: 1.6rem;
+}
+
+.turnover-card-label {
+    margin-bottom: 0.15rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.95;
+}
+
+.turnover-card-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.turnover-card-desc {
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.25;
+    opacity: 0.92;
+}
+
+
+/* =======================================================
+   KART RENKLERİ
+   Tema değişse bile bu renkler korunur.
+======================================================= */
+
+
+/* Ortalama Devir */
+
+.turnover-card.card-avg {
+    background: linear-gradient( 135deg, #2A4365 0%, #3182CE 100% ) !important;
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.20) !important;
+}
+
+
+/* Hızlı Dönen */
+
+.turnover-card.card-fast {
+    background: linear-gradient( 135deg, #22543D 0%, #38A169 100% ) !important;
+    box-shadow: 0 4px 12px rgba(56, 161, 105, 0.20) !important;
+}
+
+
+/* Normal */
+
+.turnover-card.card-normal {
+    background: linear-gradient( 135deg, #234E52 0%, #319795 100% ) !important;
+    box-shadow: 0 4px 12px rgba(49, 151, 149, 0.20) !important;
+}
+
+
+/* Yavaş Dönen */
+
+.turnover-card.card-slow {
+    background: linear-gradient( 135deg, #7B341E 0%, #DD6B20 100% ) !important;
+    box-shadow: 0 4px 12px rgba(221, 107, 32, 0.20) !important;
+}
+
+
+/* Hareketsiz */
+
+.turnover-card.card-dead {
+    background: linear-gradient( 135deg, #742A2A 0%, #E53E3E 100% ) !important;
+    box-shadow: 0 4px 12px rgba(229, 62, 62, 0.20) !important;
+}
+
+
+/* =======================================================
+   DARK MODE'DA KART RENKLERİNİ KORU
+   site.css içindeki genel .card kurallarının ezmesini önler.
+======================================================= */
+
+body.dark-mode .turnover-card.card-avg {
+    background: linear-gradient( 135deg, #2A4365 0%, #3182CE 100% ) !important;
+}
+
+body.dark-mode .turnover-card.card-fast {
+    background: linear-gradient( 135deg, #22543D 0%, #38A169 100% ) !important;
+}
+
+body.dark-mode .turnover-card.card-normal {
+    background: linear-gradient( 135deg, #234E52 0%, #319795 100% ) !important;
+}
+
+body.dark-mode .turnover-card.card-slow {
+    background: linear-gradient( 135deg, #7B341E 0%, #DD6B20 100% ) !important;
+}
+
+body.dark-mode .turnover-card.card-dead {
+    background: linear-gradient( 135deg, #742A2A 0%, #E53E3E 100% ) !important;
+}
+
+
+/* Dark mode genel card/text kurallarının
+   kart yazılarını değiştirmesini engelle */
+
+body.dark-mode .turnover-card,
+body.dark-mode .turnover-card * {
+    color: #ffffff !important;
+}
+
+
+/* =======================================================
+   TABLO KARTI - LIGHT MODE
+======================================================= */
+
+.turnover-table-card {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 12px !important;
+}
+
+
+/* =======================================================
+   TABLO
+======================================================= */
+
+.turnover-thead th {
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.turnover-rate-column {
+    width: 220px;
+}
+
+
+/* =======================================================
+   DEVİR ORANI PROGRESS BAR
+======================================================= */
+
+.turnover-progress {
+    height: 6px;
+    overflow: hidden;
+}
+
+
+/* Hızlı */
+
+.progress-bar-fast {
+    background-color: #38A169 !important;
+}
+
+
+/* Normal */
+
+.progress-bar-normal {
+    background-color: #319795 !important;
+}
+
+
+/* Yavaş */
+
+.progress-bar-slow {
+    background-color: #DD6B20 !important;
+}
+
+
+/* Hareketsiz */
+
+.progress-bar-dead {
+    background-color: #E53E3E !important;
+}
+
+
+/* =======================================================
+   DARK MODE - SADECE TABLO / İÇERİK ALANI
+======================================================= */
+
+body.dark-mode .turnover-table-card {
+    background-color: #1e1e2d !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+
+/* Tablo başlığı */
+
+body.dark-mode .table-title-text {
+    color: #f8fafc !important;
+}
+
+
+/* Tablo kolon başlıkları */
+
+body.dark-mode .turnover-thead th {
+    color: #94a3b8 !important;
+    border-color: #334155 !important;
+}
+
+
+/* Tablo hücreleri */
+
+body.dark-mode .turnover-table-card .table tbody td {
+    color: #e2e8f0 !important;
+    border-color: #334155 !important;
+}
+
+
+/* Tablo satırı hover */
+
+body.dark-mode .turnover-table-card .table tbody tr:hover > * {
+    background-color: #273449 !important;
+}
+
+
+/* =======================================================
+   LIGHT MODE TABLO
+======================================================= */
+
+body:not(.dark-mode) .turnover-table-card {
+    background-color: #ffffff !important;
+}
+
+body:not(.dark-mode) .table-title-text {
+    color: #212529 !important;
+}
+
+body:not(.dark-mode) .turnover-thead th {
+    color: #5f6b7a !important;
+}
+
+body:not(.dark-mode) .turnover-table-card .table tbody td {
+    color: #212529;
+}
+
+
+/* =======================================================
+   RESPONSIVE
+======================================================= */
+
+@media (max-width: 768px) {
+
+    .turnover-rate-column {
+        min-width: 180px;
+    }
+
+    .turnover-card {
+        min-height: 115px;
+    }
+
+    .turnover-card-value {
+        font-size: 1.25rem;
+    }
+
+    .turnover-card-desc {
+        font-size: 0.72rem;
+    }
+}

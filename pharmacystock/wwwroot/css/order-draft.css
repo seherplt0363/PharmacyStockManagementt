@@ -1,0 +1,191 @@
+﻿/* =======================================================
+   ORDER DRAFT
+======================================================= */
+
+.summary-card {
+    border-radius: 16px !important;
+    transition: all 0.25s ease-in-out;
+}
+
+    .summary-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+    }
+
+.card-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+}
+
+.card-subtext {
+    font-size: 0.82rem;
+    font-weight: 500;
+    display: block;
+}
+
+.icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+}
+
+.order-title {
+    color: #0f172a;
+}
+
+
+/* =======================================================
+   LIGHT MODE
+======================================================= */
+
+body:not(.dark-mode) .summary-card,
+body:not(.dark-mode) .order-table-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+body:not(.dark-mode) .card-subtext {
+    color: #334155 !important;
+}
+
+body:not(.dark-mode) .bg-danger-subtle {
+    background-color: #fee2e2 !important;
+}
+
+body:not(.dark-mode) .bg-primary-subtle {
+    background-color: #dbeafe !important;
+}
+
+body:not(.dark-mode) .bg-warning-subtle {
+    background-color: #fef3c7 !important;
+}
+
+body:not(.dark-mode) .bg-success-subtle {
+    background-color: #dcfce7 !important;
+}
+
+body:not(.dark-mode) .order-table-title {
+    color: #0f172a !important;
+}
+
+body:not(.dark-mode) .search-input {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+body:not(.dark-mode) .table {
+    background: transparent !important;
+    color: #1e293b !important;
+}
+
+    body:not(.dark-mode) .table thead th {
+        background: #f8fafc !important;
+        color: #475569 !important;
+        border-bottom: 2px solid #e2e8f0 !important;
+        font-weight: 600;
+    }
+
+    body:not(.dark-mode) .table tbody td {
+        color: #1e293b !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+    }
+
+    body:not(.dark-mode) .table tbody tr {
+        background: #ffffff !important;
+        transition: background-color 0.2s ease;
+    }
+
+        body:not(.dark-mode) .table tbody tr:hover {
+            background: #f8fafc !important;
+        }
+
+body:not(.dark-mode) .reason-cell {
+    color: #475569 !important;
+}
+
+
+/* =======================================================
+   DARK MODE
+======================================================= */
+
+body.dark-mode .order-title {
+    color: #f8fafc;
+}
+
+body.dark-mode .summary-card,
+body.dark-mode .order-table-card {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode .card-subtext {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .bg-danger-subtle {
+    background-color: rgba(239, 68, 68, 0.15) !important;
+}
+
+body.dark-mode .bg-primary-subtle {
+    background-color: rgba(59, 130, 246, 0.15) !important;
+}
+
+body.dark-mode .bg-warning-subtle {
+    background-color: rgba(245, 158, 11, 0.15) !important;
+}
+
+body.dark-mode .bg-success-subtle {
+    background-color: rgba(16, 185, 129, 0.15) !important;
+}
+
+body.dark-mode .order-table-title {
+    color: #f8fafc !important;
+}
+
+body.dark-mode .search-input {
+    background: #0f172a !important;
+    border: 1px solid #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode .table {
+    background: transparent !important;
+    color: #e2e8f0 !important;
+}
+
+    body.dark-mode .table thead th {
+        background: #0f172a !important;
+        color: #94a3b8 !important;
+        border-bottom: 2px solid #334155 !important;
+    }
+
+    body.dark-mode .table tbody td {
+        color: #e2e8f0 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+
+    body.dark-mode .table tbody tr {
+        background: #1e293b !important;
+        transition: background-color 0.2s ease;
+    }
+
+        body.dark-mode .table tbody tr:hover {
+            background: #2b3649 !important;
+        }
+
+body.dark-mode .reason-cell {
+    color: #cbd5e1 !important;
+}
