@@ -1,16 +1,19 @@
 ﻿@model IEnumerable<PharmacyStock.DTO.PurchaseOrderDTO.PurchaseOrderListDto>
 @using PharmacyStock.Entities.Enum
+@using System.Linq
 
 @{
     ViewData["Title"] = "Sipariş Takibi & Geçmişi";
 
-    var totalOrders = Model?.Count() ?? 0;
+    var orders = Model ?? Enumerable.Empty<PharmacyStock.DTO.PurchaseOrderDTO.PurchaseOrderListDto>();
+
+    var totalOrders = orders.Count();
 
     var pendingOrders =
-        Model?.Count(x => x.Status == OrderStatus.Ordered) ?? 0;
+        orders.Count(x => x.Status == OrderStatus.Ordered);
 
     var completedOrders =
-        Model?.Count(x => x.Status == OrderStatus.Delivered) ?? 0;
+        orders.Count(x => x.Status == OrderStatus.Delivered);
 }
 
 <div class="container-fluid mt-4">
@@ -286,7 +289,7 @@
 
                     <tbody>
 
-                        @foreach (var order in Model)
+                        @foreach (var order in orders)
                         {
                             <tr class="order-row"
                                 data-status="@order.Status">
@@ -329,18 +332,13 @@
                                     @if (order.DeliveryDate.HasValue)
                                     {
                                         <span>
-
-                                            @order.DeliveryDate.Value
-                                            .ToString("dd.MM.yyyy HH:mm")
-
+                                            @order.DeliveryDate.Value.ToString("dd.MM.yyyy HH:mm")
                                         </span>
                                     }
                                     else
                                     {
                                         <span class="badge bg-secondary opacity-75">
-
                                             Beklemede
-
                                         </span>
                                     }
 
@@ -461,8 +459,8 @@
 
 <!-- =====================================================
      SİPARİŞ DETAY MODALLARI
-===================================================== -->
-@foreach (var order in Model)
+====================================================== -->
+@foreach (var order in orders)
 {
     <div class="modal fade"
          id="orderDetailModal-@order.Id"

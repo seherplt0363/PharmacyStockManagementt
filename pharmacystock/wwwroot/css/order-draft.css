@@ -189,3 +189,153 @@ body.dark-mode .table {
 body.dark-mode .reason-cell {
     color: #cbd5e1 !important;
 }
+/* =======================================================
+   TEDARİKÇİYE GÖNDER MODALI
+======================================================= */
+
+#sendSupplierModal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    display: none;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 1rem !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    z-index: 1060 !important;
+}
+
+    #sendSupplierModal.show {
+        display: flex !important;
+    }
+
+    #sendSupplierModal .modal-dialog {
+        width: 100% !important;
+        max-width: 560px !important;
+        margin: auto !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+    }
+
+    #sendSupplierModal .modal-content {
+        width: 100% !important;
+        border-radius: 18px !important;
+        overflow: hidden;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35) !important;
+    }
+
+    #sendSupplierModal .modal-header {
+        padding: 1.25rem 1.5rem !important;
+    }
+
+    #sendSupplierModal .modal-body {
+        padding: 1.5rem !important;
+    }
+
+    #sendSupplierModal .modal-footer {
+        padding: 1rem 1.5rem !important;
+    }
+
+
+/* =======================================================
+   MODAL - LIGHT MODE
+======================================================= */
+
+body:not(.dark-mode) #sendSupplierModal .modal-content {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+body:not(.dark-mode) #sendSupplierModal .modal-header,
+body:not(.dark-mode) #sendSupplierModal .modal-footer {
+    border-color: #e2e8f0 !important;
+}
+
+body:not(.dark-mode) #sendSupplierModal .modal-title {
+    color: #0f172a !important;
+}
+
+body:not(.dark-mode) #sendSupplierModal .modal-body p {
+    color: #64748b !important;
+}
+
+body:not(.dark-mode) #sendSupplierModal #supplierSelect {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+
+/* =======================================================
+   MODAL - DARK MODE
+======================================================= */
+
+body.dark-mode #sendSupplierModal .modal-content {
+    background: #111827 !important;
+    color: #f8fafc !important;
+    border: 1px solid #334155 !important;
+}
+
+body.dark-mode #sendSupplierModal .modal-header,
+body.dark-mode #sendSupplierModal .modal-footer {
+    border-color: #334155 !important;
+}
+
+body.dark-mode #sendSupplierModal .modal-title {
+    color: #f8fafc !important;
+}
+
+body.dark-mode #sendSupplierModal .modal-body p {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode #sendSupplierModal #supplierSelect {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+    border: 1px solid #475569 !important;
+}
+
+    body.dark-mode #sendSupplierModal #supplierSelect option {
+        background: #1e293b;
+        color: #f8fafc;
+    }
+
+
+/* =======================================================
+   BACKDROP
+======================================================= */
+
+.modal-backdrop.show {
+    opacity: 0.65 !important;
+}
+
+
+/* =======================================================
+   MOBİL
+======================================================= */
+
+@media (max-width: 576px) {
+
+    #sendSupplierModal {
+        padding: 0.75rem !important;
+    }
+
+        #sendSupplierModal .modal-dialog {
+            max-width: 100% !important;
+        }
+
+        #sendSupplierModal .modal-header,
+        #sendSupplierModal .modal-body,
+        #sendSupplierModal .modal-footer {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+        }
+}
