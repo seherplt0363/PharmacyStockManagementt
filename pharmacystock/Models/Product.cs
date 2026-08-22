@@ -45,6 +45,16 @@ namespace pharmacystock.Models
         )]
         public decimal Price { get; set; }
 
+        // Ürün sisteme ilk eklendiğindeki stok miktarı
+        [Range(
+            0,
+            1000000,
+            ErrorMessage = "Başlangıç stoğu negatif olamaz."
+        )]
+        [Display(Name = "Başlangıç Stoku")]
+        public int InitialStock { get; set; } = 0;
+
+        // Stok hareketlerinden sonra oluşan anlık stok miktarı
         [Range(
             0,
             1000000,

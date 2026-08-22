@@ -5,10 +5,12 @@ using pharmacystock.Models;
 
 using PharmacyStock.DataAccess.Repositories.Concrete;
 using PharmacyStock.DataAccess.Repositories.Interfaces;
+using QuestPDF.Infrastructure;
 
 using ApplicationDbContext = PharmacyStock.DataAccess.Context.ApplicationDbContext;
 
 var builder = WebApplication.CreateBuilder(args);
+QuestPDF.Settings.License = LicenseType.Community;
 
 
 // =====================================================

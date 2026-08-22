@@ -3,87 +3,228 @@
 ======================================================= */
 
 .summary-card {
+    min-height: 140px;
     border-radius: 16px !important;
+    border: none !important;
+    overflow: hidden;
     transition: all 0.25s ease-in-out;
 }
 
     .summary-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.22) !important;
     }
 
+
+/* =======================================================
+   KPI KART RENKLERİ
+======================================================= */
+
+/* ACİL SİPARİŞ - KIRMIZI */
+.card-urgent {
+    background: linear-gradient( 135deg, #a92f37 0%, #df3c42 100% ) !important;
+    color: #ffffff !important;
+}
+
+
+/* SİPARİŞ VERİLECEK - YEŞİL */
+.card-primary {
+    background: linear-gradient( 135deg, #24784f 0%, #35a168 100% ) !important;
+    color: #ffffff !important;
+}
+
+
+/* KRİTİK ÜRÜN - TURUNCU */
+.card-warning {
+    background: linear-gradient( 135deg, #a94719 0%, #e46d18 100% ) !important;
+    color: #ffffff !important;
+}
+
+
+/* ORTALAMA DEVİR - MAVİ */
+.card-success {
+    background: linear-gradient( 135deg, #28588a 0%, #378bd0 100% ) !important;
+    color: #ffffff !important;
+}
+
+
+/* =======================================================
+   KPI KART İÇERİĞİ
+======================================================= */
+
+.summary-card .card-body {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 18px !important;
+}
+
+
+/* =======================================================
+   KART BAŞLIĞI
+======================================================= */
+
 .card-label {
-    font-size: 0.85rem;
+    color: #ffffff !important;
+    font-size: 0.82rem;
+    font-weight: 800 !important;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     display: block;
 }
 
+
+/* =======================================================
+   KART ALT YAZISI
+======================================================= */
+
 .card-subtext {
-    font-size: 0.82rem;
-    font-weight: 500;
+    color: rgba(255, 255, 255, 0.88) !important;
+    font-size: 0.78rem;
+    font-weight: 600;
     display: block;
 }
 
+
+/* =======================================================
+   KPI SAYISI
+======================================================= */
+
+.summary-card h2 {
+    color: #ffffff !important;
+    font-size: 2rem !important;
+    font-weight: 800 !important;
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+}
+
+
+/* =======================================================
+   İKON KUTUSU
+======================================================= */
+
 .icon-box {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    font-size: 1.2rem;
 }
+
+
+/* =======================================================
+   BOOTSTRAP RENK SINIFLARINI EZ
+======================================================= */
+
+.summary-card .text-danger,
+.summary-card .text-primary,
+.summary-card .text-warning,
+.summary-card .text-warning-emphasis,
+.summary-card .text-success {
+    color: #ffffff !important;
+}
+
+
+/* =======================================================
+   BADGE
+======================================================= */
 
 .badge {
     padding: 8px 14px;
     font-size: 0.85rem;
 }
 
+
+/* =======================================================
+   SAYFA BAŞLIĞI
+======================================================= */
+
 .order-title {
     color: #0f172a;
+    margin-bottom: 0.25rem !important;
 }
+
+.order-description {
+    margin-bottom: 0 !important;
+}
+
+.order-update {
+    font-size: 0.78rem;
+    line-height: 1;
+}
+
+
+/* =======================================================
+   SAYFA HİZALAMASI
+======================================================= */
+
+#orderDraftPage {
+    padding-top: 1.5rem !important;
+}
+
+    #orderDraftPage > .row.g-3.mb-4 {
+        margin-top: 0 !important;
+    }
 
 
 /* =======================================================
    LIGHT MODE
 ======================================================= */
 
-body:not(.dark-mode) .summary-card,
 body:not(.dark-mode) .order-table-card {
     background: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
     color: #0f172a !important;
 }
 
-body:not(.dark-mode) .card-subtext {
-    color: #334155 !important;
+
+/* KPI kartları light mode'da da renkli kalsın */
+body:not(.dark-mode) .summary-card {
+    border: none !important;
+    color: #ffffff !important;
 }
 
+    body:not(.dark-mode) .summary-card .card-label,
+    body:not(.dark-mode) .summary-card .card-subtext,
+    body:not(.dark-mode) .summary-card h2,
+    body:not(.dark-mode) .summary-card .icon-box {
+        color: #ffffff !important;
+    }
+
+
+/* Bootstrap subtle sınıfları */
 body:not(.dark-mode) .bg-danger-subtle {
-    background-color: #fee2e2 !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 body:not(.dark-mode) .bg-primary-subtle {
-    background-color: #dbeafe !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 body:not(.dark-mode) .bg-warning-subtle {
-    background-color: #fef3c7 !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 body:not(.dark-mode) .bg-success-subtle {
-    background-color: #dcfce7 !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
 }
+
 
 body:not(.dark-mode) .order-table-title {
     color: #0f172a !important;
 }
+
 
 body:not(.dark-mode) .search-input {
     background: #f8fafc !important;
     border: 1px solid #e2e8f0 !important;
     color: #0f172a !important;
 }
+
 
 body:not(.dark-mode) .table {
     background: transparent !important;
@@ -124,42 +265,57 @@ body.dark-mode .order-title {
     color: #f8fafc;
 }
 
-body.dark-mode .summary-card,
+
 body.dark-mode .order-table-card {
     background: #1e293b !important;
     border: 1px solid #334155 !important;
     color: #f8fafc !important;
 }
 
-body.dark-mode .card-subtext {
-    color: #94a3b8 !important;
+
+/* KPI kartları dark mode'da da renkli kalsın */
+body.dark-mode .summary-card {
+    border: none !important;
+    color: #ffffff !important;
 }
 
+    body.dark-mode .summary-card .card-label,
+    body.dark-mode .summary-card .card-subtext,
+    body.dark-mode .summary-card h2,
+    body.dark-mode .summary-card .icon-box {
+        color: #ffffff !important;
+    }
+
+
+/* Bootstrap subtle sınıfları */
 body.dark-mode .bg-danger-subtle {
-    background-color: rgba(239, 68, 68, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 body.dark-mode .bg-primary-subtle {
-    background-color: rgba(59, 130, 246, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 body.dark-mode .bg-warning-subtle {
-    background-color: rgba(245, 158, 11, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 body.dark-mode .bg-success-subtle {
-    background-color: rgba(16, 185, 129, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
 }
+
 
 body.dark-mode .order-table-title {
     color: #f8fafc !important;
 }
+
 
 body.dark-mode .search-input {
     background: #0f172a !important;
     border: 1px solid #334155 !important;
     color: #f8fafc !important;
 }
+
 
 body.dark-mode .table {
     background: transparent !important;
@@ -189,6 +345,8 @@ body.dark-mode .table {
 body.dark-mode .reason-cell {
     color: #cbd5e1 !important;
 }
+
+
 /* =======================================================
    TEDARİKÇİYE GÖNDER MODALI
 ======================================================= */
@@ -212,6 +370,7 @@ body.dark-mode .reason-cell {
         display: flex !important;
     }
 
+
     #sendSupplierModal .modal-dialog {
         width: 100% !important;
         max-width: 560px !important;
@@ -224,12 +383,14 @@ body.dark-mode .reason-cell {
         transform: none !important;
     }
 
+
     #sendSupplierModal .modal-content {
         width: 100% !important;
         border-radius: 18px !important;
         overflow: hidden;
         box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35) !important;
     }
+
 
     #sendSupplierModal .modal-header {
         padding: 1.25rem 1.5rem !important;
@@ -254,18 +415,22 @@ body:not(.dark-mode) #sendSupplierModal .modal-content {
     border: 1px solid #e2e8f0 !important;
 }
 
+
 body:not(.dark-mode) #sendSupplierModal .modal-header,
 body:not(.dark-mode) #sendSupplierModal .modal-footer {
     border-color: #e2e8f0 !important;
 }
 
+
 body:not(.dark-mode) #sendSupplierModal .modal-title {
     color: #0f172a !important;
 }
 
+
 body:not(.dark-mode) #sendSupplierModal .modal-body p {
     color: #64748b !important;
 }
+
 
 body:not(.dark-mode) #sendSupplierModal #supplierSelect {
     background: #f8fafc !important;
@@ -284,24 +449,29 @@ body.dark-mode #sendSupplierModal .modal-content {
     border: 1px solid #334155 !important;
 }
 
+
 body.dark-mode #sendSupplierModal .modal-header,
 body.dark-mode #sendSupplierModal .modal-footer {
     border-color: #334155 !important;
 }
 
+
 body.dark-mode #sendSupplierModal .modal-title {
     color: #f8fafc !important;
 }
 
+
 body.dark-mode #sendSupplierModal .modal-body p {
     color: #94a3b8 !important;
 }
+
 
 body.dark-mode #sendSupplierModal #supplierSelect {
     background: #1e293b !important;
     color: #f8fafc !important;
     border: 1px solid #475569 !important;
 }
+
 
     body.dark-mode #sendSupplierModal #supplierSelect option {
         background: #1e293b;
@@ -338,4 +508,291 @@ body.dark-mode #sendSupplierModal #supplierSelect {
             padding-left: 1rem !important;
             padding-right: 1rem !important;
         }
+
+    .summary-card {
+        min-height: 125px;
+    }
+
+        .summary-card h2 {
+            font-size: 1.7rem !important;
+        }
+
+    .icon-box {
+        width: 44px;
+        height: 44px;
+    }
+}
+/* =======================================================
+   ORDER DRAFT TABLE
+   STOCK TURNOVER İLE UYUMLU TEMA
+======================================================= */
+
+.order-table-card {
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+
+
+/* =======================================================
+   TABLO BAŞLIĞI
+======================================================= */
+
+.order-table-title {
+    font-weight: 700;
+}
+
+.order-search-input {
+    width: 275px;
+    max-width: 100%;
+    border-radius: 10px !important;
+}
+
+
+/* =======================================================
+   TABLE
+======================================================= */
+
+.order-draft-table {
+    margin-bottom: 0;
+}
+
+.order-draft-thead th {
+    font-size: 0.82rem;
+    font-weight: 600;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.order-draft-table tbody td {
+    vertical-align: middle;
+    font-size: 0.9rem;
+}
+
+.order-draft-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+
+/* =======================================================
+   DEVİR ORANI
+======================================================= */
+
+.order-turnover-column {
+    min-width: 140px;
+}
+
+.order-turnover-progress {
+    height: 6px;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+
+/* HIZLI */
+.order-progress-fast {
+    background-color: #38A169 !important;
+}
+
+
+/* NORMAL */
+.order-progress-normal {
+    background-color: #319795 !important;
+}
+
+
+/* YAVAŞ */
+.order-progress-slow {
+    background-color: #DD6B20 !important;
+}
+
+
+/* HAREKETSİZ */
+.order-progress-dead {
+    background-color: #E53E3E !important;
+}
+
+
+/* =======================================================
+   ÖNCELİK BADGELERİ
+======================================================= */
+
+.order-badge-urgent {
+    background-color: #E53E3E !important;
+    color: #ffffff !important;
+}
+
+.order-badge-order {
+    background-color: #DD6B20 !important;
+    color: #ffffff !important;
+}
+
+.order-badge-watch {
+    background-color: #319795 !important;
+    color: #ffffff !important;
+}
+
+.order-badge-none {
+    background-color: #718096 !important;
+    color: #ffffff !important;
+}
+
+
+/* =======================================================
+   SKOR
+======================================================= */
+
+.order-score-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: rgba(221, 107, 32, 0.12);
+    border: 1px solid #DD6B20;
+    color: #DD6B20;
+    font-weight: 800;
+    font-size: 0.82rem;
+}
+
+
+/* =======================================================
+   PASİF SATIR
+======================================================= */
+
+.order-row-passive {
+    opacity: 0.78;
+}
+
+
+/* =======================================================
+   LIGHT MODE
+======================================================= */
+
+body:not(.dark-mode) .order-table-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    color: #212529 !important;
+}
+
+body:not(.dark-mode) .order-table-title {
+    color: #212529 !important;
+}
+
+body:not(.dark-mode) .order-search-input {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+body:not(.dark-mode) .order-draft-thead th {
+    color: #5f6b7a !important;
+    border-color: #e2e8f0 !important;
+}
+
+body:not(.dark-mode) .order-draft-table tbody td {
+    color: #212529 !important;
+    border-color: #edf2f7 !important;
+}
+
+body:not(.dark-mode) .order-draft-table tbody tr:hover > * {
+    background-color: #f8fafc !important;
+}
+
+body:not(.dark-mode) .reason-cell {
+    color: #5f6b7a !important;
+}
+
+
+/* =======================================================
+   DARK MODE
+======================================================= */
+
+body.dark-mode .order-table-card {
+    background: #1e1e2d !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode .order-table-title {
+    color: #f8fafc !important;
+}
+
+body.dark-mode .order-search-input {
+    background: #0f172a !important;
+    border: 1px solid #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode .order-draft-thead th {
+    color: #94a3b8 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .order-draft-table tbody td {
+    color: #e2e8f0 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .order-draft-table tbody tr:hover > * {
+    background-color: #273449 !important;
+}
+
+body.dark-mode .reason-cell {
+    color: #cbd5e1 !important;
+}
+
+
+/* =======================================================
+   RESPONSIVE
+======================================================= */
+
+@media (max-width: 768px) {
+
+    .order-search-input {
+        width: 100%;
+    }
+
+    .order-turnover-column {
+        min-width: 130px;
+    }
+
+    .order-draft-table {
+        min-width: 1050px;
+    }
+}
+/* Sipariş tablosunu Stok Devir tablosuna biraz daha yaklaştır */
+
+.order-draft-table tbody td {
+    padding-top: 0.65rem !important;
+    padding-bottom: 0.65rem !important;
+}
+
+.order-draft-thead th {
+    padding-top: 0.65rem !important;
+    padding-bottom: 0.65rem !important;
+}
+
+.order-score-badge {
+    min-width: 38px;
+    padding: 5px 8px;
+    font-size: 0.78rem;
+}
+
+.order-draft-table .badge {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+}
+
+.reason-cell {
+    max-width: 220px;
+    line-height: 1.25;
+}
+
+.order-turnover-progress {
+    height: 6px;
+}
+
+.order-table-card {
+    border-radius: 12px !important;
 }

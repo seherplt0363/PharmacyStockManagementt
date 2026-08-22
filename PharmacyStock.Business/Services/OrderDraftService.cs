@@ -71,21 +71,32 @@ namespace PharmacyStock.Business.Services
                         dailyAverageConsumption * 7);
 
                 // =================================================
-                // STOK DEVİR HIZI
+                // 30 GÜNLÜK STOK DEVİR ORANI
+                // =================================================
+                //
+                // Eski hesap:
+                //
+                // Son 30 Gün Satış / Mevcut Stok * 100
+                //
+                // Stok çok azaldığında %500, %1000 gibi
+                // aşırı yüksek değerler oluşabiliyordu.
+                //
+                // Yeni hesap:
+                //
+                // Satış / (Satış + Mevcut Stok) * 100
+                //
+                // Böylece değer doğal olarak %0 - %100
+                // arasında kalır.
                 // =================================================
 
-                var baseStockForTurnover =
-                    product.CurrentStock > 0
-                        ? product.CurrentStock
-                        : Math.Max(
-                            product.MinimumStock,
-                            1);
+                var stockBase =
+                    totalStockOut + product.CurrentStock;
 
                 var turnoverRate =
-                    Math.Min(
-                        (totalStockOut /
-                         (double)baseStockForTurnover) * 100,
-                        1000);
+                    stockBase > 0
+                        ? (totalStockOut /
+                           (double)stockBase) * 100
+                        : 0;
 
                 // =================================================
                 // STOK KAÇ GÜN YETER?
@@ -134,7 +145,7 @@ namespace PharmacyStock.Business.Services
                     product.MinimumStock;
 
                 // -------------------------------------------------
-                // 1. STOK DURUMU - %50
+                // 1. STOK DURUMU - MAKSİMUM 50 PUAN
                 // -------------------------------------------------
 
                 if (isOutOfStock)
@@ -160,7 +171,7 @@ namespace PharmacyStock.Business.Services
                 }
 
                 // -------------------------------------------------
-                // 2. SATIŞ YOĞUNLUĞU - %30
+                // 2. SATIŞ YOĞUNLUĞU - MAKSİMUM 30 PUAN
                 // -------------------------------------------------
 
                 if (dailyAverageConsumption >= 5)
@@ -186,24 +197,39 @@ namespace PharmacyStock.Business.Services
                 }
 
                 // -------------------------------------------------
-                // 3. DEVİR HIZI - %20
+                // 3. 30 GÜNLÜK DEVİR ORANI - MAKSİMUM 20 PUAN
+                // -------------------------------------------------
+                //
+                // Yeni devir oranı 0-100 arasında olduğu için
+                // eşikler buna göre düzenlenmiştir.
+                //
+                // %70 ve üzeri  -> yüksek devir
+                // %40 - %69.9   -> orta devir
+                // %40 altı      -> ek puan yok
                 // -------------------------------------------------
 
-                if (turnoverRate >= 150)
+                if (turnoverRate >= 70)
                 {
                     score += 20;
 
                     reasons.Add(
-                        "Yüksek stok devir hızı");
+                        "Yüksek stok devir oranı");
                 }
-                else if (turnoverRate >= 80)
+                else if (turnoverRate >= 40)
                 {
                     score += 10;
+
+                    reasons.Add(
+                        "Orta düzey stok devir oranı");
                 }
 
                 // =================================================
                 // ÖNERİLEN SİPARİŞ MİKTARI
                 // =================================================
+
+                // Minimum stok
+                // + 7 günlük güvenlik stoğu
+                // + 15 günlük beklenen tüketim
 
                 var targetStock =
                     product.MinimumStock +
@@ -222,7 +248,8 @@ namespace PharmacyStock.Business.Services
                             targetStock -
                             product.CurrentStock);
 
-                    // Eczane siparişlerini 5'in katına yuvarla
+                    // Eczane siparişlerini
+                    // 5'in katına yuvarla
                     if (suggestedOrder > 0 &&
                         suggestedOrder % 5 != 0)
                     {
@@ -258,6 +285,8 @@ namespace PharmacyStock.Business.Services
                     _ => "Sipariş Verme"
                 };
 
+                // Sipariş miktarı 0 ise kullanıcının gereksiz
+                // sipariş vermesini engelle.
                 if (suggestedOrder == 0)
                 {
                     priority =
@@ -362,7 +391,7 @@ namespace PharmacyStock.Business.Services
                 "Minimum Stok";
 
             worksheet.Cell(1, 4).Value =
-                "Stok Devir Hızı (%)";
+                "30 Günlük Devir Oranı (%)";
 
             worksheet.Cell(1, 5).Value =
                 "Önerilen Adet";
@@ -532,7 +561,7 @@ namespace PharmacyStock.Business.Services
 
                                     HeaderCell(
                                         header.Cell(),
-                                        "Devir");
+                                        "30 Gün Devir");
 
                                     HeaderCell(
                                         header.Cell(),

@@ -2,49 +2,155 @@
    ABC ANALYSIS
 ======================================================= */
 
-.abc-card-description {
-    font-size: 11px;
-    line-height: 1.2;
+
+/* =======================================================
+   ÖZET KARTLARI
+   STOCK TURNOVER İLE AYNI TASARIM DİLİ
+======================================================= */
+
+.abc-summary-card {
+    border-radius: 12px !important;
+    border: none !important;
+    min-height: 125px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
 }
+
+    .abc-summary-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+    }
+
+
+    /* Kart içindeki bütün yazılar */
+
+    .abc-summary-card,
+    .abc-summary-card * {
+        color: #ffffff !important;
+    }
+
+
+/* =======================================================
+   KART İÇERİKLERİ
+======================================================= */
+
+.abc-card-icon {
+    display: inline-block;
+    margin-bottom: 0.15rem;
+    font-size: 1.6rem;
+}
+
+.abc-card-label {
+    margin-bottom: 0.15rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.95;
+}
+
+.abc-card-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.abc-card-description {
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.25;
+    opacity: 0.92;
+}
+
+
+/* =======================================================
+   KART RENKLERİ
+   STOCK TURNOVER İLE BİREBİR AYNI PALET
+======================================================= */
+
+
+/* TOPLAM ÜRÜN - MAVİ */
+
+.abc-summary-card.card-total {
+    background: linear-gradient( 135deg, #2A4365 0%, #3182CE 100% ) !important;
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.20) !important;
+}
+
+
+/* A GRUBU - YEŞİL */
+
+.abc-summary-card.card-a {
+    background: linear-gradient( 135deg, #22543D 0%, #38A169 100% ) !important;
+    box-shadow: 0 4px 12px rgba(56, 161, 105, 0.20) !important;
+}
+
+
+/* B GRUBU - TURUNCU */
+
+.abc-summary-card.card-b {
+    background: linear-gradient( 135deg, #7B341E 0%, #DD6B20 100% ) !important;
+    box-shadow: 0 4px 12px rgba(221, 107, 32, 0.20) !important;
+}
+
+
+/* C GRUBU - KIRMIZI */
+
+.abc-summary-card.card-c {
+    background: linear-gradient( 135deg, #742A2A 0%, #E53E3E 100% ) !important;
+    box-shadow: 0 4px 12px rgba(229, 62, 62, 0.20) !important;
+}
+
+
+/* =======================================================
+   DARK MODE'DA RENKLERİ KORU
+======================================================= */
+
+body.dark-mode .abc-summary-card.card-total {
+    background: linear-gradient( 135deg, #2A4365 0%, #3182CE 100% ) !important;
+}
+
+body.dark-mode .abc-summary-card.card-a {
+    background: linear-gradient( 135deg, #22543D 0%, #38A169 100% ) !important;
+}
+
+body.dark-mode .abc-summary-card.card-b {
+    background: linear-gradient( 135deg, #7B341E 0%, #DD6B20 100% ) !important;
+}
+
+body.dark-mode .abc-summary-card.card-c {
+    background: linear-gradient( 135deg, #742A2A 0%, #E53E3E 100% ) !important;
+}
+
+body.dark-mode .abc-summary-card,
+body.dark-mode .abc-summary-card * {
+    color: #ffffff !important;
+}
+
+
+/* =======================================================
+   GRAFİKLER
+======================================================= */
 
 .abc-chart-wrapper {
     position: relative;
     height: 220px;
 }
 
+
+/* =======================================================
+   ARAMA
+======================================================= */
+
 .abc-search {
     max-width: 300px;
 }
 
-.abc-progress {
-    height: 6px;
-}
-
-
-/* =======================================================
-   LIGHT MODE
-======================================================= */
-
 body:not(.dark-mode) .abc-search .form-control,
 body:not(.dark-mode) .abc-search .input-group-text {
-    background-color: #ffffff;
-    border-color: #dee2e6;
-    color: #212529;
+    background-color: #ffffff !important;
+    border-color: #dee2e6 !important;
+    color: #212529 !important;
 }
-
-body:not(.dark-mode) #abcTable thead th {
-    background-color: #f8f9fa;
-    color: #495057;
-}
-
-body:not(.dark-mode) #abcTable tbody td {
-    color: #212529;
-}
-
-
-/* =======================================================
-   DARK MODE
-======================================================= */
 
 body.dark-mode .abc-search .form-control,
 body.dark-mode .abc-search .input-group-text {
@@ -54,11 +160,74 @@ body.dark-mode .abc-search .input-group-text {
 }
 
     body.dark-mode .abc-search .form-control::placeholder {
-        color: #64748b;
+        color: #64748b !important;
     }
 
+
+/* =======================================================
+   ABC TABLO
+======================================================= */
+
+#abcTable {
+    margin-bottom: 0;
+}
+
+    #abcTable thead th {
+        font-size: 0.85rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    #abcTable tbody td {
+        vertical-align: middle;
+    }
+
+
+/* =======================================================
+   LIGHT MODE - TABLO
+======================================================= */
+
+body:not(.dark-mode) #abcTable thead th {
+    background-color: #f8f9fa !important;
+    color: #5f6b7a !important;
+    border-color: #e2e8f0 !important;
+}
+
+body:not(.dark-mode) #abcTable tbody td {
+    color: #212529 !important;
+    border-color: #edf2f7 !important;
+}
+
+body:not(.dark-mode) #abcTable tbody tr:hover > * {
+    background-color: #f1f5f9 !important;
+}
+
+
+/* =======================================================
+   DARK MODE - GENEL ABC KARTLARI
+======================================================= */
+
+body.dark-mode #abcAnalysisPage > .card,
+body.dark-mode #abcAnalysisPage .row > div > .card {
+    background-color: #1e1e2d !important;
+    border: 1px solid rgba(255,255,255,0.05) !important;
+    color: #f8fafc !important;
+}
+
+
+/* Kart başlıkları */
+
+body.dark-mode #abcAnalysisPage .card-header {
+    color: #f8fafc !important;
+}
+
+
+/* =======================================================
+   DARK MODE - TABLO
+======================================================= */
+
 body.dark-mode #abcTable {
-    color: #e2e8f0;
+    color: #e2e8f0 !important;
 }
 
     body.dark-mode #abcTable thead th {
@@ -76,3 +245,53 @@ body.dark-mode #abcTable {
         background-color: #273449 !important;
         color: #ffffff !important;
     }
+
+
+/* =======================================================
+   PROGRESS BAR
+======================================================= */
+
+.abc-progress {
+    height: 6px;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+
+/* =======================================================
+   RESPONSIVE
+======================================================= */
+
+@media (max-width: 768px) {
+
+    .abc-summary-card {
+        min-height: 115px;
+    }
+
+    .abc-card-value {
+        font-size: 1.25rem;
+    }
+
+    .abc-card-description {
+        font-size: 0.72rem;
+    }
+
+    .abc-search {
+        max-width: 100%;
+    }
+
+    .abc-chart-wrapper {
+        height: 200px;
+    }
+}
+.abc-progress-a {
+    background-color: #38A169 !important;
+}
+
+.abc-progress-b {
+    background-color: #DD6B20 !important;
+}
+
+.abc-progress-c {
+    background-color: #E53E3E !important;
+}

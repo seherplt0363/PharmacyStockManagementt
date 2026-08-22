@@ -91,7 +91,9 @@ namespace PharmacyStock.Business.Services
                 Description = dto.Description,
                 ExpirationDate = dto.ExpirationDate,
                 MinimumStock = dto.MinimumStock,
-                CurrentStock = 0
+
+                InitialStock = dto.InitialStock,
+                CurrentStock = dto.InitialStock
             };
 
             await _unitOfWork.Products.AddAsync(product);

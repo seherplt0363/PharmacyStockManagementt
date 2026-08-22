@@ -316,25 +316,14 @@
                         {
                             @foreach (var item in Model)
                             {
-                                var initialStock =
-                                    item.CurrentStock
-                                    - item.TotalStockIn
-                                    + item.TotalStockOut;
-
-                                var rate =
-                                    Math.Max(
-                                        0,
-                                        Math.Min(
-                                            item.TurnoverRate,
-                                            100
-                                        )
-                                    );
-
+                                var rate = Math.Max(
+                                    0,
+                                    Math.Min(item.TurnoverRate, 100)
+                                );
 
                                 string badgeClass;
                                 string progressClass;
                                 string statusText;
-
 
                                 if (item.TurnoverRate >= 80)
                                 {
@@ -361,68 +350,39 @@
                                     progressClass = "progress-bar-dead";
                                 }
 
-
                                 <tr>
 
-
                                     <!-- ÜRÜN -->
-
                                     <td class="fw-semibold">
-
                                         <i class="bi bi-capsule text-primary me-2"></i>
-
                                         @item.ProductName
-
                                     </td>
-
 
                                     <!-- BAŞLANGIÇ STOKU -->
-
                                     <td class="text-center">
-
                                         <span class="badge bg-secondary opacity-75">
-
-                                            @initialStock
-
+                                            @item.BeginningStock
                                         </span>
-
                                     </td>
-
 
                                     <!-- GİRİŞ -->
-
                                     <td class="text-center">
-
                                         <span class="text-success fw-bold d-inline-flex align-items-center gap-1">
-
                                             <i class="bi bi-arrow-down-circle"></i>
-
                                             @item.TotalStockIn
-
                                         </span>
-
                                     </td>
-
 
                                     <!-- ÇIKIŞ -->
-
                                     <td class="text-center">
-
                                         <span class="text-danger fw-bold d-inline-flex align-items-center gap-1">
-
                                             <i class="bi bi-arrow-up-circle"></i>
-
                                             @item.TotalStockOut
-
                                         </span>
-
                                     </td>
 
-
                                     <!-- MEVCUT -->
-
                                     <td class="text-center">
-
                                         @if (item.CurrentStock <= 0)
                                         {
                                             <span class="badge bg-danger">
@@ -435,14 +395,10 @@
                                                 @item.CurrentStock
                                             </span>
                                         }
-
                                     </td>
 
-
                                     <!-- DEVİR ORANI -->
-
                                     <td>
-
                                         <div class="progress mb-1 turnover-progress">
 
                                             <div class="progress-bar @progressClass"
@@ -455,31 +411,23 @@
 
                                         </div>
 
-
                                         <small class="fw-bold opacity-75">
-
                                             @item.TurnoverRate.ToString("0.0") %
-
                                         </small>
-
                                     </td>
-
 
                                     <!-- DURUM -->
-
                                     <td class="text-center">
-
                                         <span class="badge @badgeClass px-2 py-1">
-
                                             @statusText
-
                                         </span>
-
                                     </td>
-
 
                                 </tr>
                             }
+
+
+                           
                         }
 
                     </tbody>

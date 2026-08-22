@@ -26,100 +26,88 @@
     <!-- =====================================================
          BAŞLIK VE AKSİYON BUTONLARI
     ====================================================== -->
+ 
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
 
+        <!-- SOL TARAF -->
         <div>
 
-            <h1 class="fw-bold mb-1 order-title">
-
+            <h2 class="fw-bold mb-1 order-title">
                 <i class="fas fa-clipboard-list text-primary me-2"></i>
-
                 Akıllı Sipariş Taslağı
+            </h2>
 
-            </h1>
-
-
-            <p class="mb-1 order-description">
-
-                Karar destek sistemi tarafından analiz edilen ve
-                sipariş önerisi oluşturulan ürünler.
-
+            <p class="text-muted mb-0 order-description">
+                Karar destek sistemi tarafından analiz edilen ve sipariş önerisi oluşturulan ürünler.
             </p>
 
+        </div>
 
-            <small class="order-update">
 
+        <!-- SAĞ TARAF -->
+        <div class="d-flex flex-column align-items-md-end gap-2">
+
+            <div class="btn-group">
+
+                <!-- PDF -->
+                <a asp-action="ExportPdf"
+                   class="btn btn-danger"
+                   role="button">
+
+                    <i class="fas fa-file-pdf me-1"></i>
+                    PDF
+
+                </a>
+
+
+                <!-- EXCEL -->
+                <a asp-action="ExportExcel"
+                   class="btn btn-success"
+                   role="button">
+
+                    <i class="fas fa-file-excel me-1"></i>
+                    Excel
+
+                </a>
+
+
+                <!-- YAZDIR -->
+                <button type="button"
+                        id="btnPrint"
+                        class="btn btn-secondary">
+
+                    <i class="fas fa-print me-1"></i>
+                    Yazdır
+
+                </button>
+
+
+                <!-- TEDARİKÇİYE GÖNDER -->
+                @if (User.IsInRole("Admin") || User.IsInRole("Yetkili"))
+                {
+                    <button type="button"
+                            class="btn btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#sendSupplierModal">
+
+                        <i class="fas fa-paper-plane me-1"></i>
+                        Tedarikçiye Gönder
+
+                    </button>
+                }
+
+            </div>
+
+            <small class="order-update text-muted">
                 <i class="fas fa-clock me-1"></i>
-
-                Son Güncelleme :
+                Son Güncelleme:
                 @DateTime.Now.ToString("dd.MM.yyyy HH:mm")
-
             </small>
 
         </div>
 
-
-        <div class="btn-group">
-
-            <!-- PDF -->
-
-            <a asp-action="ExportPdf"
-               class="btn btn-danger"
-               role="button">
-
-                <i class="fas fa-file-pdf me-1"></i>
-
-                PDF
-
-            </a>
-
-
-            <!-- EXCEL -->
-
-            <a asp-action="ExportExcel"
-               class="btn btn-success"
-               role="button">
-
-                <i class="fas fa-file-excel me-1"></i>
-
-                Excel
-
-            </a>
-
-
-            <!-- YAZDIR -->
-
-            <button type="button"
-                    id="btnPrint"
-                    class="btn btn-secondary">
-
-                <i class="fas fa-print me-1"></i>
-
-                Yazdır
-
-            </button>
-
-
-            <!-- TEDARİKÇİYE GÖNDER -->
-            @if (User.IsInRole("Admin") || User.IsInRole("Yetkili"))
-            {
-                <button type="button"
-                        class="btn btn-primary"
-                        data-bs-toggle="modal"
-                        data-bs-target="#sendSupplierModal">
-
-                    <i class="fas fa-paper-plane me-1"></i>
-
-                    Tedarikçiye Gönder
-
-                </button>
-            }
-
-        </div>
-
     </div>
-
 
 
     <!-- =====================================================
@@ -336,248 +324,299 @@
          SİPARİŞ ÖNERİ TABLOSU
     ====================================================== -->
 
-    <div class="card order-table-card border-0 shadow-sm rounded-4 mb-4">
+    <!-- =====================================================
+     SİPARİŞ ÖNERİ TABLOSU
+====================================================== -->
 
+    <div class="card order-table-card shadow-sm border-0 rounded-3 mb-4">
 
-        <!-- TABLO BAŞLIK -->
+        <div class="card-body p-4">
 
-        <div class="card-header bg-transparent py-3">
+            <!-- TABLO BAŞLIK -->
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
 
-            <div class="d-flex justify-content-between align-items-center">
-
-
-                <h4 class="mb-0 order-table-title fw-bold">
-
-                    <i class="fas fa-list-check me-2 text-info"></i>
-
+                <h4 class="mb-0 fw-bold order-table-title">
+                    <i class="fas fa-list-check me-2 text-primary"></i>
                     Sipariş Öneri Listesi
-
                 </h4>
-
 
                 <input id="tableSearch"
                        type="search"
-                       class="form-control w-25 search-input"
+                       class="form-control order-search-input"
                        placeholder="🔍 İlaç Ara..."
                        autocomplete="off" />
 
             </div>
 
-        </div>
 
+            <!-- TABLO -->
+            <div class="table-responsive">
 
+                <table class="table table-hover align-middle mb-0 order-draft-table">
 
-        <!-- TABLO -->
+                    <thead class="order-draft-thead">
 
-        <div class="table-responsive">
+                        <tr>
 
-            <table class="table table-hover align-middle mb-0">
+                            <th>
+                                İlaç
+                            </th>
 
+                            <th class="text-center">
+                                Stok
+                            </th>
 
-                <thead>
+                            <th class="text-center">
+                                Min
+                            </th>
 
-                    <tr>
+                            <th class="text-center">
+                                30 Gün Satış
+                            </th>
 
-                        <th>
-                            İlaç
-                        </th>
+                            <th class="text-center">
+                                Günlük Ort.
+                            </th>
 
-                        <th class="text-center">
-                            Stok
-                        </th>
+                            <th class="text-center">
+                                Kalan Gün
+                            </th>
 
-                        <th class="text-center">
-                            Min
-                        </th>
+                            <th class="order-turnover-column">
+                                Devir
+                            </th>
 
-                        <th class="text-center">
-                            30 Gün Satış
-                        </th>
+                            <th class="text-center">
+                                Skor
+                            </th>
 
-                        <th class="text-center">
-                            Günlük Ort.
-                        </th>
+                            <th class="text-center">
+                                Öneri
+                            </th>
 
-                        <th class="text-center">
-                            Kalan Gün
-                        </th>
+                            <th class="text-center">
+                                Öncelik
+                            </th>
 
-                        <th class="text-center">
-                            Devir
-                        </th>
-
-                        <th class="text-center">
-                            Skor
-                        </th>
-
-                        <th class="text-center">
-                            Öneri
-                        </th>
-
-                        <th class="text-center">
-                            Öncelik
-                        </th>
-
-                        <th>
-                            Gerekçe
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-
-                <tbody id="draftTableBody">
-
-                    @foreach (var item in modelList)
-                    {
-                        var badge =
-                            item.Priority == "Acil"
-                                ? "bg-danger"
-
-                            : item.Priority == "Sipariş Ver"
-                                ? "bg-warning text-dark"
-
-                            : item.Priority == "Takip Et"
-                                ? "bg-info text-dark"
-
-                            : "bg-secondary";
-
-
-                        bool hasOrder =
-                            item.SuggestedOrderQuantity > 0;
-
-
-                        <tr class="@(!hasOrder ? "opacity-75" : "")">
-
-
-                            <!-- İLAÇ -->
-
-                            <td class="fw-bold">
-
-                                @item.ProductName
-
-                            </td>
-
-
-                            <!-- MEVCUT STOK -->
-
-                            <td class="text-center fw-semibold">
-
-                                @item.CurrentStock
-
-                            </td>
-
-
-                            <!-- MINIMUM STOK -->
-
-                            <td class="text-center text-muted">
-
-                                @item.MinimumStock
-
-                            </td>
-
-
-                            <!-- SON 30 GÜN SATIŞ -->
-
-                            <td class="text-center">
-
-                                @item.Last30DaysSales
-
-                            </td>
-
-
-                            <!-- GÜNLÜK ORTALAMA -->
-
-                            <td class="text-center">
-
-                                @item.DailyAverageConsumption.ToString("0.0")
-
-                            </td>
-
-
-                            <!-- KALAN GÜN -->
-
-                            <td class="text-center">
-
-                                @(
-                                    item.DaysRemaining >= 999
-                                        ? "∞"
-                                        : $"{item.DaysRemaining} Gün"
-                                )
-
-                            </td>
-
-
-                            <!-- DEVİR -->
-
-                            <td class="text-center">
-
-                                %@item.TurnoverRate.ToString("0.0")
-
-                            </td>
-
-
-                            <!-- SKOR -->
-
-                            <td class="text-center">
-
-                                <span class="badge bg-dark border border-warning text-warning">
-
-                                    @item.PriorityScore
-
-                                </span>
-
-                            </td>
-
-
-                            <!-- ÖNERİ -->
-
-                            <td class="text-center fw-bold @(hasOrder ? "text-success" : "text-muted")">
-
-                                @(
-                                    hasOrder
-                                        ? $"{item.SuggestedOrderQuantity} Kutu"
-                                        : "-"
-                                )
-
-                            </td>
-
-
-                            <!-- ÖNCELİK -->
-
-                            <td class="text-center">
-
-                                <span class="badge rounded-pill @badge">
-
-                                    @item.Priority
-
-                                </span>
-
-                            </td>
-
-
-                            <!-- GEREKÇE -->
-
-                            <td class="small reason-cell">
-
-                                @item.Reason
-
-                            </td>
+                            <th>
+                                Gerekçe
+                            </th>
 
                         </tr>
-                    }
 
-                </tbody>
+                    </thead>
 
-            </table>
+
+                    <tbody id="draftTableBody">
+
+                        @foreach (var item in modelList)
+                        {
+                            var badge =
+                                item.Priority == "Acil"
+                                    ? "order-badge-urgent"
+
+                                : item.Priority == "Sipariş Ver"
+                                    ? "order-badge-order"
+
+                                : item.Priority == "Takip Et"
+                                    ? "order-badge-watch"
+
+                                : "order-badge-none";
+
+
+                            bool hasOrder =
+                                item.SuggestedOrderQuantity > 0;
+
+
+                            var turnoverRate = Math.Max(
+                                0,
+                                Math.Min(item.TurnoverRate, 100)
+                            );
+
+
+                            string turnoverClass;
+
+                            if (item.TurnoverRate >= 80)
+                            {
+                                turnoverClass = "order-progress-fast";
+                            }
+                            else if (item.TurnoverRate >= 60)
+                            {
+                                turnoverClass = "order-progress-normal";
+                            }
+                            else if (item.TurnoverRate >= 40)
+                            {
+                                turnoverClass = "order-progress-slow";
+                            }
+                            else
+                            {
+                                turnoverClass = "order-progress-dead";
+                            }
+
+
+                            <tr class="@(!hasOrder ? "order-row-passive" : "")">
+
+                                <!-- İLAÇ -->
+                                <td class="fw-semibold">
+
+                                    <i class="bi bi-capsule text-primary me-2"></i>
+
+                                    @item.ProductName
+
+                                </td>
+
+
+                                <!-- MEVCUT STOK -->
+                                <td class="text-center">
+
+                                    @if (item.CurrentStock <= item.MinimumStock)
+                                    {
+                                        <span class="badge bg-danger">
+                                            @item.CurrentStock
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            @item.CurrentStock
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- MINIMUM STOK -->
+                                <td class="text-center">
+
+                                    <span class="badge bg-secondary opacity-75">
+                                        @item.MinimumStock
+                                    </span>
+
+                                </td>
+
+
+                                <!-- 30 GÜN SATIŞ -->
+                                <td class="text-center">
+
+                                    <span class="text-success fw-bold">
+                                        @item.Last30DaysSales
+                                    </span>
+
+                                </td>
+
+
+                                <!-- GÜNLÜK ORTALAMA -->
+                                <td class="text-center">
+
+                                    @item.DailyAverageConsumption.ToString("0.0")
+
+                                </td>
+
+
+                                <!-- KALAN GÜN -->
+                                <td class="text-center">
+
+                                    @if (item.DaysRemaining < 7)
+                                    {
+                                        <span class="text-danger fw-bold">
+                                            @item.DaysRemaining.ToString("0.0") Gün
+                                        </span>
+                                    }
+                                    else if (item.DaysRemaining >= 999)
+                                    {
+                                        <span class="text-muted">
+                                            ∞
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            @item.DaysRemaining.ToString("0.0") Gün
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- DEVİR -->
+                                <td>
+
+                                    <div class="progress mb-1 order-turnover-progress">
+
+                                        <div class="progress-bar @turnoverClass"
+                                             role="progressbar"
+                                             style="width: @turnoverRate.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)%"
+                                             aria-valuenow="@Convert.ToInt32(turnoverRate)"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                        </div>
+
+                                    </div>
+
+                                    <small class="fw-bold opacity-75">
+                                        %@item.TurnoverRate.ToString("0.0")
+                                    </small>
+
+                                </td>
+
+
+                                <!-- SKOR -->
+                                <td class="text-center">
+
+                                    <span class="order-score-badge">
+                                        @item.PriorityScore
+                                    </span>
+
+                                </td>
+
+
+                                <!-- ÖNERİ -->
+                                <td class="text-center">
+
+                                    @if (hasOrder)
+                                    {
+                                        <span class="fw-bold text-success">
+                                            @item.SuggestedOrderQuantity
+                                            <small>Kutu</small>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            -
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- ÖNCELİK -->
+                                <td class="text-center">
+
+                                    <span class="badge rounded-pill @badge">
+                                        @item.Priority
+                                    </span>
+
+                                </td>
+
+
+                                <!-- GEREKÇE -->
+                                <td class="small reason-cell">
+                                    @item.Reason
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
 
         </div>
 
     </div>
-
-</div>
 
 
 

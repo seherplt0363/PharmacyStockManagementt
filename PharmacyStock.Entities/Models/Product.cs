@@ -39,6 +39,10 @@ namespace PharmacyStock.Entities.Models
         [Range(0.01, 1000000, ErrorMessage = "Fiyat 0'dan büyük olmalıdır.")]
         public decimal Price { get; set; }
 
+        [Range(0, 1000000, ErrorMessage = "Başlangıç stoğu negatif olamaz.")]
+        [Display(Name = "Başlangıç Stoku")]
+        public int InitialStock { get; set; } = 0;
+
         [Range(0, 1000000, ErrorMessage = "Stok negatif olamaz.")]
         [Display(Name = "Mevcut Stok")]
         public int CurrentStock { get; set; } = 0;

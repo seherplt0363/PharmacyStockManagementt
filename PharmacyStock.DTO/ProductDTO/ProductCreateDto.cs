@@ -43,5 +43,13 @@ namespace PharmacyStock.DTO.ProductDTO
             ErrorMessage = "Minimum stok negatif olamaz."
         )]
         public int MinimumStock { get; set; } = 10;
+
+        [Required(ErrorMessage = "Başlangıç stoğu zorunludur.")]
+        [Range(
+            0,
+            1000000,
+            ErrorMessage = "Başlangıç stoğu negatif olamaz."
+        )]
+        public int InitialStock { get; set; }
     }
 }

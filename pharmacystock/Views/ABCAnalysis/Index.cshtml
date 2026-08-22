@@ -76,26 +76,22 @@
 
         <div class="btn-group">
 
-            <button type="button"
-                    id="btnExportExcel"
-                    class="btn btn-outline-success btn-sm">
+            <a asp-controller="ABCAnalysis"
+             asp-action="ExportExcel"
+             class="btn btn-outline-success btn-sm">
 
-                <i class="bi bi-file-earmark-excel me-1"></i>
+              <i class="bi bi-file-earmark-excel me-1"></i>
+                     Excel
 
-                Excel
+              </a>
 
-            </button>
+                <a asp-controller="ABCAnalysis"
+                  asp-action="ExportPdf"
+                   class="btn btn-outline-danger btn-sm">
 
-
-            <button type="button"
-                    id="btnExportPdf"
-                    class="btn btn-outline-danger btn-sm">
-
-                <i class="bi bi-file-earmark-pdf me-1"></i>
-
-                PDF
-
-            </button>
+                      <i class="bi bi-file-earmark-pdf me-1"></i>
+                            PDF
+                </a>
 
 
             <button type="button"
@@ -115,181 +111,110 @@
 
 
     <!-- =====================================================
-         A-B-C ÖZET KARTLARI
-    ====================================================== -->
+     A-B-C ÖZET KARTLARI
+====================================================== -->
 
-    <div class="row g-3 mb-4">
+<div class="row g-3 mb-4">
 
+    <!-- TOPLAM ÜRÜN -->
+    <div class="col-md-3">
+        <div class="abc-summary-card card-total h-100">
+            <div class="card-body text-center">
 
-        <!-- TOPLAM ÜRÜN -->
+                <i class="bi bi-box-seam abc-card-icon"></i>
 
-        <div class="col-md-3">
+                <div class="abc-card-label">
+                    Toplam Ürün
+                </div>
 
-            <div class="card border-0 shadow-sm h-100">
+                <div class="abc-card-value">
+                    @totalProducts
+                </div>
 
-                <div class="card-body">
-
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-
-                        <span class="text-muted fw-semibold">
-
-                            Toplam Ürün
-
-                        </span>
-
-
-                        <div class="bg-primary bg-opacity-10 p-2 rounded">
-
-                            <i class="bi bi-box-seam text-primary fs-5"></i>
-
-                        </div>
-
-                    </div>
-
-
-                    <h2 class="fw-bold mb-1">
-                        @totalProducts
-                    </h2>
-
-
-                    <small class="text-muted">
-                        Analize dahil edilen ürün sayısı
-                    </small>
-
+                <div class="abc-card-description">
+                    Analize dahil edilen ürün sayısı
                 </div>
 
             </div>
-
         </div>
-
-
-
-        <!-- A GRUBU -->
-
-        <div class="col-md-3">
-
-            <div class="card border-0 shadow-sm h-100 border-start border-success border-4">
-
-                <div class="card-body">
-
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-
-                        <span class="text-success fw-bold">
-                            🟢 A Grubu
-                        </span>
-
-
-                        <span class="badge bg-success">
-                            Yüksek Değer
-                        </span>
-
-                    </div>
-
-
-                    <h2 class="fw-bold mb-1">
-                        @groupACount
-                    </h2>
-
-
-                    <small class="text-muted d-block abc-card-description">
-
-                        Toplam satış değerinin yaklaşık
-                        <b>%80'ini</b> oluşturan kritik ürünler.
-
-                    </small>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- B GRUBU -->
-
-        <div class="col-md-3">
-
-            <div class="card border-0 shadow-sm h-100 border-start border-warning border-4">
-
-                <div class="card-body">
-
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-
-                        <span class="text-warning fw-bold">
-                            🟡 B Grubu
-                        </span>
-
-
-                        <span class="badge bg-warning text-dark">
-                            Orta Değer
-                        </span>
-
-                    </div>
-
-
-                    <h2 class="fw-bold mb-1">
-                        @groupBCount
-                    </h2>
-
-
-                    <small class="text-muted d-block abc-card-description">
-
-                        Orta seviyede satış ve ciro hacmine sahip ürünler.
-                        (~%15)
-
-                    </small>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- C GRUBU -->
-
-        <div class="col-md-3">
-
-            <div class="card border-0 shadow-sm h-100 border-start border-danger border-4">
-
-                <div class="card-body">
-
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-
-                        <span class="text-danger fw-bold">
-                            🔴 C Grubu
-                        </span>
-
-
-                        <span class="badge bg-danger">
-                            Düşük Değer
-                        </span>
-
-                    </div>
-
-
-                    <h2 class="fw-bold mb-1">
-                        @groupCCount
-                    </h2>
-
-
-                    <small class="text-muted d-block abc-card-description">
-
-                        Satış hacmi ve ciro katkısı düşük ürünler.
-                        (~%5)
-
-                    </small>
-
-                </div>
-
-            </div>
-
-        </div>
-
     </div>
 
+
+    <!-- A GRUBU -->
+    <div class="col-md-3">
+        <div class="abc-summary-card card-a h-100">
+            <div class="card-body text-center">
+
+                <i class="bi bi-gem abc-card-icon"></i>
+
+                <div class="abc-card-label">
+                    A Grubu
+                </div>
+
+                <div class="abc-card-value">
+                    @groupACount
+                </div>
+
+                <div class="abc-card-description">
+                    Toplam satış değerinin yaklaşık %80'ini
+                    oluşturan kritik ürünler
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- B GRUBU -->
+    <div class="col-md-3">
+        <div class="abc-summary-card card-b h-100">
+            <div class="card-body text-center">
+
+                <i class="bi bi-bar-chart-fill abc-card-icon"></i>
+
+                <div class="abc-card-label">
+                    B Grubu
+                </div>
+
+                <div class="abc-card-value">
+                    @groupBCount
+                </div>
+
+                <div class="abc-card-description">
+                    Orta seviyede satış ve ciro hacmine
+                    sahip ürünler
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- C GRUBU -->
+    <div class="col-md-3">
+        <div class="abc-summary-card card-c h-100">
+            <div class="card-body text-center">
+
+                <i class="bi bi-box abc-card-icon"></i>
+
+                <div class="abc-card-label">
+                    C Grubu
+                </div>
+
+                <div class="abc-card-value">
+                    @groupCCount
+                </div>
+
+                <div class="abc-card-description">
+                    Satış hacmi ve ciro katkısı
+                    düşük ürünler
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
 
 
     <!-- =====================================================
@@ -487,7 +412,10 @@
 
                                         <div class="progress mb-1 abc-progress">
 
-                                            <div class="progress-bar bg-info"
+                                          <div class="progress-bar
+                                              @(item.ABCClass == "A" ? "abc-progress-a" :
+                                               item.ABCClass == "B" ? "abc-progress-b" :
+                                                 "abc-progress-c")"
                                                  role="progressbar"
                                                  style="width:@item.CumulativePercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%"
                                                  aria-valuenow="@item.CumulativePercentage"

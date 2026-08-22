@@ -35,10 +35,15 @@ namespace PharmacyStock.Business.Services
                     .Where(x => x.Type == TransactionType.Out)
                     .Sum(x => x.Quantity);
 
+                var beginningStock = product.InitialStock;
                 var currentStock = product.CurrentStock;
 
-                var turnoverRate = stockIn > 0
-                    ? (double)stockOut / stockIn * 100
+                // Dönem boyunca kullanılabilir toplam stok
+                var availableStock = beginningStock + stockIn;
+
+                // Kullanılabilir stoğun ne kadarı çıkmış/satılmış?
+                var turnoverRate = availableStock > 0
+                    ? (double)stockOut / availableStock * 100
                     : 0;
 
                 string status;
@@ -70,6 +75,7 @@ namespace PharmacyStock.Business.Services
                 {
                     ProductId = product.Id,
                     ProductName = product.Name,
+                    BeginningStock = beginningStock,
                     TotalStockIn = stockIn,
                     TotalStockOut = stockOut,
                     CurrentStock = currentStock,

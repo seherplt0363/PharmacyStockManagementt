@@ -6,6 +6,8 @@
 
         public string ProductName { get; set; } = string.Empty;
 
+        public int BeginningStock { get; set; }
+
         public int TotalStockIn { get; set; }
 
         public int TotalStockOut { get; set; }
